@@ -2,7 +2,7 @@ package game.battle;
 
 import firerice.core.Process;
 import firerice.common.Helper;
-import game.Actor;
+import game.actor.Actor;
 
 class Battle extends Process {
 	public var battleActor1( default, null ) : BattleActor = null;

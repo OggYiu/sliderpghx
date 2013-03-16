@@ -25,13 +25,14 @@ import game.ContactListener;
 import game.Grid;
 import game.Column;
 import game.Settings;
-import game.Monster;
-import game.Player;
+import game.actor.Monster;
+import game.actor.Player;
 import game.Camera;
 import game.DebugDraw;
 import types.EGameEntity;
 import game.Global;
 import game.battle.BattleManager;
+import ru.stablex.ui.UIBuilder;
 
 /**
  * ...
@@ -236,6 +237,13 @@ class SceneGame extends Scene
 		
 		// debug sprite in the toppest level
 		this.context.addChild( debugSprite );
+
+		// init ui
+        UIBuilder.init();
+        UIBuilder.regClass('SceneGame');
+        this.context.addChild( UIBuilder.buildFn('assets/ui/test.xml')( {
+        	sceneGame : this
+        }) );
     }
 
 	// public function createSensor (x:Float, y:Float, width:Float, height:Float, dynamicBody:Bool):B2Body {
@@ -474,5 +482,13 @@ class SceneGame extends Scene
 		super.dispose_();
 		
 		Global.getInstance().sceneGame = null;
+	}
+
+	function inputEscapeHandler() : Void {
+		trace( "inputEscapeHandler" );
+	}
+
+	function inputRunHandler() : Void {
+		trace( "inputRunHandler" );
 	}
 }

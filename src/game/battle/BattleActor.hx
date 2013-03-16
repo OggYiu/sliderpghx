@@ -1,7 +1,8 @@
 package game.battle;
 
 import firerice.core.Process;
-import game.Actor;
+import game.actor.Actor;
+import game.actor.Player;
 import game.battle.moves.attack.AttackBase;
 import game.battle.moves.attack.NormalAttack;
 import game.battle.moves.attack.MultipleAttack;
@@ -30,8 +31,8 @@ class BattleActor extends Process {
 		this.enemy.isTurnEnded = false;
 		this.enemy.isMyTurn = true;
 
-		// this.curMove = new NormalAttack( this );
-		this.curMove = new MultipleAttack( this );
+		this.curMove = new NormalAttack( this );
+		// this.curMove = new MultipleAttack( this );
 		this.curMove.beginMove();
 	}
 

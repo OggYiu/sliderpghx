@@ -1,7 +1,7 @@
 package game.battle;
 
 import firerice.core.Process;
-import game.Actor;
+import game.actor.Actor;
 
 class BattleTurn extends Process {
 	public var attacker( default, null ) : Actor = null;

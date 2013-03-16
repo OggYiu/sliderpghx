@@ -5,6 +5,9 @@ import firerice.components.TransformComponent;
 import firerice.common.Helper;
 import nme.display.Graphics;
 import game.GameEntity;
+import game.actor.Actor;
+import game.actor.Monster;
+import game.actor.Player;
 import types.EGameEntity;
 import com.eclecticdesignstudio.motion.Actuate;
 

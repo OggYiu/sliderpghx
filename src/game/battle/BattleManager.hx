@@ -3,6 +3,7 @@ package game.battle;
 import firerice.core.Process;
 import firerice.common.Helper;
 import game.GameEntity;
+import game.actor.Actor;
 
 class BattleManager extends Process {
   var battles : Hash<Battle> = null;

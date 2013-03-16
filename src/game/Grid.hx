@@ -8,6 +8,7 @@ import minimalcomps.Label;
 import scenes.SceneGame;
 import types.EGameEntity;
 import game.Column;
+import game.actor.Actor;
 
 class Grid extends GameEntity {
 	// public var pos( default, default ) : Int = 0;
