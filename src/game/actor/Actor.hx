@@ -1,9 +1,11 @@
 package game.actor;
 
 import types.EActor;
+import types.EActorState;
 import firerice.types.EOrientation;
 import firerice.core.motionwelder.MReader;
 import nme.geom.Point;
+import game.actor.ActorStateMachine;
 
 class Actor extends GameEntity {
 	public var actorType( default, null ) : EActor;
@@ -13,13 +15,26 @@ class Actor extends GameEntity {
 	public var level( getLevel, null ) : Int;
 	public var exp( getExp, null ) : Int;
 	public var damage( getDamage, null ) : Float;
-	public var actorState( default, null ) : ActorState;
+	public var actorCNS( default, null ) : ActorCNS;
+	public var actorStateMachine( default, null ) : ActorStateMachine = null;
 	
 	public function new( p_id : String, p_parent : Dynamic, p_actorType : EActor ) {
 		super( p_id, p_parent );
 
+		this.actorStateMachine = new ActorStateMachine( this );
+		this.changeState( EActorState.idle );
+
 		this.actorType = p_actorType;
-		this.actorState = ActorSettings.createActorState( this );
+		this.actorCNS = ActorSettings.createActorCNS( this );
+	}
+
+	public function changeState( stateType : EActorState ) : Void {
+	}
+
+	override function update_( dt : Float ) : Void {
+		super.update_( dt );
+
+		this.actorStateMachine.update( dt );
 	}
 
 	public function playAttackAnimation() : Void {
@@ -48,7 +63,7 @@ class Actor extends GameEntity {
 	}
 
 	public function heal( p_value : Float ) : Void {
-		this.actorState.heal( p_value );
+		this.actorCNS.heal( p_value );
 	}
 
 	public function hurtOthers( p_victim : Actor, p_damage : Float ) : Void {
@@ -60,7 +75,7 @@ class Actor extends GameEntity {
 	}
 
 	public function hurtByOthers( p_attacker : Actor, p_damage : Float ) : Void {
-		this.actorState.reduceHp( p_damage );
+		this.actorCNS.reduceHp( p_damage );
 
 		var pos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
 		game.EffectManager.getInstance().showText( pos.x, pos.y, "-" + p_damage + "", 24 );
@@ -76,25 +91,25 @@ class Actor extends GameEntity {
 	}
 
 	function getIsDead() : Bool {
-		return this.actorState.isDead;
+		return this.actorCNS.isDead;
 	}
 
 	function gainExp( p_value : Int ) : Void {
-		this.actorState.gainExp( p_value );
+		this.actorCNS.gainExp( p_value );
 
 		var pos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
 		game.EffectManager.getInstance().showText( pos.x, pos.y, "+" + p_value, 24, 0x00FF00 );
 	}
 
 	function getLevel() : Int {
-		return this.actorState.level;
+		return this.actorCNS.level;
 	}
 
 	function getExp() : Int {
-		return this.actorState.exp;
+		return this.actorCNS.exp;
 	}
 
 	function getDamage() : Float {
-		return this.actorState.damage;
+		return this.actorCNS.damage;
 	}
 }

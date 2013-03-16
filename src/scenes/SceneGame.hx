@@ -60,6 +60,7 @@ class SceneGame extends Scene
 	var player : Player = null;
 	var keymap : Hash<Bool> = null;
 	var isPaused : Bool = false;
+	var isRunning : Int = 0;
 
 	public function new( p_parentContext : Sprite ) {
 		super( SceneGame.ID, p_parentContext );
@@ -375,7 +376,8 @@ class SceneGame extends Scene
 		}
 
 		if( !this.player.isInBattle ) {
-			this.player.transform.x += dt * 30;
+			var value : Float = dt * 30;
+			this.player.transform.x += value + ( value * isRunning * 2 );
 		}
 		// this.camera.x = this.player.transform.x;
 		// this.camera.x += dt * 20;
@@ -488,7 +490,13 @@ class SceneGame extends Scene
 		trace( "inputEscapeHandler" );
 	}
 
-	function inputRunHandler() : Void {
-		trace( "inputRunHandler" );
+	function inputRunBeginHandler() : Void {
+		trace( "inputRunBeginHandler" );
+		this.isRunning = 1;
+	}
+
+	function inputRunEndHandler() : Void {
+		trace( "inputRunEndHandler" );
+		this.isRunning = 0;
 	}
 }

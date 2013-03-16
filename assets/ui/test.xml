@@ -3,6 +3,6 @@
 <!-- <Text left="0" top="100" text="'Hello how are you baby!!'"/> -->
 
 <Widget skin:Paint-border="0" w="480" h="320" left="0" top="0">
-	<Button left="20" top="250" w="80" h="20" text="'escape'" skin:Paint-color="0xbbbbbb" on-click="@sceneGame.inputEscapeHandler();"/>
-	<Button left="20" top="280" w="80" h="20" text="'run'" skin:Paint-color="0xbbbbbb" on-click="@sceneGame.inputRunHandler();"/>
+	<Button left="20" top="250" w="80" h="20" text="'escape'" skin:Paint-color="0xbbbbbb" on-mouseDown="@sceneGame.inputEscapeHandler();"/>
+	<Button left="20" top="280" w="80" h="20" text="'run'" skin:Paint-color="0xbbbbbb" on-mouseDown="@sceneGame.inputRunBeginHandler();" on-mouseUp="@sceneGame.inputRunEndHandler();"/>
 </Widget>

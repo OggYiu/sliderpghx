@@ -14,12 +14,12 @@ class ActorSettings {
 	// public var blueGem( default, default ) : Int = 0;
 	// public var greenGem( default, default ) : Int = 0;
 
-	public static function createActorState( p_owner : Actor ) : ActorState {
-		var actorState : ActorState = new ActorState( p_owner );
+	public static function createActorCNS( p_owner : Actor ) : ActorCNS {
+		var actorCNS : ActorCNS = new ActorCNS( p_owner );
 
 		switch( p_owner.actorType ) {
 			case EActor.jimmy: {
-				actorState.init(10,	// hp
+				actorCNS.init(	10,	// hp
 								2,	// damage
 								2,	// defense
 								0,	// exp
@@ -29,7 +29,7 @@ class ActorSettings {
 								);
 			}
 			case EActor.redSlime: {
-				actorState.init(10,	// hp
+				actorCNS.init(	10,	// hp
 								1,	// damage
 								2,	// defense
 								10,	// exp
@@ -40,7 +40,8 @@ class ActorSettings {
 			}
 			default: Helper.assert( false, "unhandled type : " + p_owner.actorType );
 		}
-		return actorState;
+		
+		return actorCNS;
 	}
 
 	public static function getNextLevelExp( p_actor : Actor ) : Int {
