@@ -19,6 +19,7 @@ import nme.Assets;
 import nme.display.BitmapData;
 import nme.display.Sprite;
 import nme.display.Bitmap;
+import nme.geom.Point;
 import nme.events.Event;
 import nme.events.IEventDispatcher;
 import minimalcomps.Label;
@@ -45,6 +46,7 @@ class Entity extends Process, implements IEntityCollection, implements IComponen
     public var command( default, null ) : CommandComponent = null;
     public var physics( default, null ) : PhysicsComponent = null;
     public var state( default, null ) : StateComponent = null;
+   	public var contextPos( getContextPos, null ) : Point;
 	
 	public function new( p_id : String, ?p_parent : Dynamic ) {
 		super( p_id );
@@ -211,5 +213,11 @@ class Entity extends Process, implements IEntityCollection, implements IComponen
 
 	public function setVisible( p_visible : Bool ) : Void {
 		this.context.visible = p_visible;
+	}
+
+	function getContextPos() : Point {
+		var point : Point;
+		point = this.context.localToGlobal( new Point( 0, 0 ) );
+		return point;
 	}
 }

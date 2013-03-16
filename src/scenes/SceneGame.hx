@@ -361,7 +361,7 @@ class SceneGame extends Scene
 
 		BattleManager.getInstance().update( dt );
 
-		// this.scrollBg( this.bgs, dt, 20 );
+		this.scrollBg( this.bgs, dt, 0 );
 		this.scrollBg( this.botBgs, dt, 35 );
 		this.scrollBg( this.topBgs, dt, 15 );
 		this.scrollBg( this.topFgs, dt, 20 );
@@ -377,7 +377,7 @@ class SceneGame extends Scene
 			} 
 		}
 
-		// this.camera.x = this.player.transform.x;
+		// this.camera.x = this.player.transform.x - 100;
 		// this.camera.x += dt * 20;
 
 		var cameraSpeed : Float = 200;
@@ -485,7 +485,10 @@ class SceneGame extends Scene
 	}
 
 	function inputEscapeHandler() : Void {
-		trace( "inputEscapeHandler" );
+		// trace( "inputEscapeHandler" );
+		// if( this.player.curState == EActorState.battle ) {
+			this.player.changeState( EActorState.escape );
+		// }
 	}
 
 	function inputRunBeginHandler() : Void {
@@ -503,6 +506,7 @@ class SceneGame extends Scene
 	}
 
 	function inputGemHandler( p_gemType : EGemType ) : Void {
-		trace( "inputGemHandler: " + p_gemType );
+		// trace( "inputGemHandler: " + p_gemType );
+		this.player.useSkill( p_gemType );
 	}
 }

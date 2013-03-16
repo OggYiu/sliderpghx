@@ -7,4 +7,5 @@ enum EActorState {
 	escape;
 	run;
 	battle;
+	instanceTrigger;
 }

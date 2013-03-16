@@ -1,5 +1,9 @@
 package game.actor;
 
+import firerice.common.Helper;
+import types.EGemType;
+import types.ESkill;
+
 class ActorCNS {
 	public var owner( default, null ) : Actor = null;
 	public var level( default, null ) : Int = 1;
@@ -12,9 +16,11 @@ class ActorCNS {
 	public var blueGem( default, null ) : Int = 0;
 	public var greenGem( default, null ) : Int = 0;
 	public var isDead( default, null ) : Bool = false;
+	public var skills( default, null ) : Hash<SkillInfo> = null;
 
 	public function new( p_owner : Actor ) {
 		this.owner = p_owner;
+		this.skills = new Hash<SkillInfo>();
 	}
 
 	public function init(	p_hp : Float,
@@ -33,6 +39,17 @@ class ActorCNS {
 		this.redGem = p_redGem;
 		this.greenGem = p_greenGem;
 		this.blueGem = p_blueGem;
+	}
+
+	public function addSkill( p_skillInfo : SkillInfo ) : Void {
+		Helper.assert( !this.skills.exists( p_skillInfo.skillType + "" ), "skill " + p_skillInfo.skillType + " already existed" );
+		for( skill in this.skills ) {
+			if( skill.gemBind == p_skillInfo.gemBind ) {
+				Helper.assert( false, "gemBind : " + skill.gemBind + " already existed" );
+				break;
+			}
+		}
+		this.skills.set( p_skillInfo.skillType + "", p_skillInfo );
 	}
 
 	public function reduceHp( p_value : Float ) : Void {
@@ -61,5 +78,17 @@ class ActorCNS {
 		if( this.hp > this.maxHp ) {
 			this.hp = this.maxHp;
 		}
+	}
+
+	public function getSkill( p_gemType : EGemType ) : SkillInfo {
+		var skillInfo : SkillInfo = null;
+
+		for( skill in this.skills ) {
+			if( skill.gemBind == p_gemType ) {
+				skillInfo = skill;
+				break;
+			}
+		}
+		return skillInfo;
 	}
 }

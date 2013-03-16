@@ -2,6 +2,9 @@ package game.actor;
 
 import firerice.common.Helper;
 import types.EActor;
+import types.EGemType;
+import types.ESkill;
+import game.actor.SkillInfo;
 
 class ActorSettings {
 	public function new() {
@@ -27,6 +30,11 @@ class ActorSettings {
 								0,	// blueGem
 								0	// greenGem
 								);
+				var skillInfo : SkillInfo = new SkillInfo();
+				skillInfo.gemBind = EGemType.green;
+				skillInfo.skillType = ESkill.heal;
+				skillInfo.hpMod = 10;
+				actorCNS.addSkill( skillInfo );
 			}
 			case EActor.redSlime: {
 				actorCNS.init(	10,	// hp
@@ -40,7 +48,7 @@ class ActorSettings {
 			}
 			default: Helper.assert( false, "unhandled type : " + p_owner.actorType );
 		}
-		
+
 		return actorCNS;
 	}
 

@@ -28,12 +28,14 @@ class ActorStateMachine extends Process {
 			releaseCurState();
 		}
 
+		// trace( this.owner.id + " change state: " + stateType );
 		if( Std.is( this.owner, Player ) ) {
 			switch( stateType ) {
 				case EActorState.idle: this.curState = new IdleState( this.owner );
 				case EActorState.walk: this.curState = new WalkState( this.owner );
 				case EActorState.run: this.curState = new RunState( this.owner );
 				case EActorState.battle: this.curState = new BattleState( this.owner );
+				case EActorState.escape: this.curState = new EscapeState( this.owner );
 				default: Helper.assert( false, "unhandled type : " + stateType );
 			}
 		} else {

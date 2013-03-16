@@ -41,7 +41,11 @@ class Player extends Actor {
 			case EGameEntity.grid: {
 				var grid : Grid = cast( entity, Grid );
 				// trace( "endContactHandler, grid: " + grid.id );
-				grid.parentColumn.releaseColumn();
+				if( grid.contextPos.x <= this.contextPos.x ) {
+					// trace( "grid.transform.x: " + grid.transform.x );
+					// trace( "this.transform.x: " + this.transform.x );
+					grid.parentColumn.releaseColumn();
+				}
 			}
 			default:
 		}

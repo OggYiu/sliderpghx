@@ -2,10 +2,15 @@ package game.actor;
 
 import types.EActor;
 import types.EActorState;
+import types.EGemType;
+import types.ESkill;
+import types.EMoveType;
 import firerice.types.EOrientation;
 import firerice.core.motionwelder.MReader;
+import firerice.common.Helper;
 import nme.geom.Point;
 import game.actor.ActorStateMachine;
+import game.actor.SkillInfo;
 
 class Actor extends GameEntity {
 	public var actorType( default, null ) : EActor;
@@ -26,6 +31,21 @@ class Actor extends GameEntity {
 
 		this.actorType = p_actorType;
 		this.actorCNS = ActorSettings.createActorCNS( this );
+	}
+
+	public function useSkill( p_gemType : EGemType ) : Void {
+		var skillInfo : SkillInfo = this.actorCNS.getSkill( p_gemType );
+		// trace( "useSkill : " + skillType );
+
+		if( skillInfo != null && skillInfo.skillType != ESkill.unknown ) {
+			var moveType : EMoveType = SkillInfo.getMoveType( skillInfo.skillType );
+			if( moveType == EMoveType.instance ) {
+				switch( skillInfo.skillType ) {
+					case ESkill.heal: heal( skillInfo.hpMod );
+					default: Helper.assert( false, "unhandled type : " + skillInfo.skillType );
+				}
+			}
+		}
 	}
 
 	public function changeState( stateType : EActorState ) : Void {
@@ -69,6 +89,9 @@ class Actor extends GameEntity {
 
 	public function heal( p_value : Float ) : Void {
 		this.actorCNS.heal( p_value );
+
+		var pos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
+		game.EffectManager.getInstance().showText( pos.x, pos.y, p_value + "", 24, 0x00FF00 );
 	}
 
 	public function hurtOthers( p_victim : Actor, p_damage : Float ) : Void {
