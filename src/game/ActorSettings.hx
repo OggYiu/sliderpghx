@@ -19,22 +19,24 @@ class ActorSettings {
 
 		switch( p_owner.actorType ) {
 			case EActor.jimmy: {
-				actorState.hp = 10;
-				actorState.damage = 2;
-				actorState.defense = 2;
-				actorState.exp = 0;
-				actorState.redGem = 0;
-				actorState.blueGem = 0;
-				actorState.greenGem = 0;
+				actorState.init(10,	// hp
+								2,	// damage
+								2,	// defense
+								0,	// exp
+								0,	// red gem
+								0,	// blueGem
+								0	// greenGem
+								);
 			}
 			case EActor.redSlime: {
-				actorState.hp = 10;
-				actorState.damage = 1;
-				actorState.defense = 0;
-				actorState.exp = 10;
-				actorState.redGem = 0;
-				actorState.blueGem = 0;
-				actorState.greenGem = 0;
+				actorState.init(10,	// hp
+								1,	// damage
+								2,	// defense
+								10,	// exp
+								0,	// red gem
+								0,	// blueGem
+								0	// greenGem
+								);
 			}
 			default: Helper.assert( false, "unhandled type : " + p_owner.actorType );
 		}
