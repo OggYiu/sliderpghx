@@ -10,11 +10,12 @@ import game.actor.ActorStateMachine;
 class Actor extends GameEntity {
 	public var actorType( default, null ) : EActor;
 	public var curGrid( default, default ) : Grid = null;
-	public var isInBattle( default, default ) : Bool = false;
+	// public var isInBattle( default, default ) : Bool = false;
 	public var isDead( getIsDead, null ) : Bool;
 	public var level( getLevel, null ) : Int;
 	public var exp( getExp, null ) : Int;
 	public var damage( getDamage, null ) : Float;
+	public var curState( getCurState, null ) : EActorState;
 	public var actorCNS( default, null ) : ActorCNS;
 	public var actorStateMachine( default, null ) : ActorStateMachine = null;
 	
@@ -22,13 +23,17 @@ class Actor extends GameEntity {
 		super( p_id, p_parent );
 
 		this.actorStateMachine = new ActorStateMachine( this );
-		this.changeState( EActorState.idle );
 
 		this.actorType = p_actorType;
 		this.actorCNS = ActorSettings.createActorCNS( this );
 	}
 
 	public function changeState( stateType : EActorState ) : Void {
+		this.actorStateMachine.changeState( stateType );
+	}
+
+	function getCurState() : EActorState {
+		return this.actorStateMachine.curState.stateType;
 	}
 
 	override function update_( dt : Float ) : Void {

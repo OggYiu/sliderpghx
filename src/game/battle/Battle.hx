@@ -3,6 +3,8 @@ package game.battle;
 import firerice.core.Process;
 import firerice.common.Helper;
 import game.actor.Actor;
+import game.actor.Player;
+import types.EActorState;
 
 class Battle extends Process {
 	public var battleActor1( default, null ) : BattleActor = null;
@@ -12,7 +14,9 @@ class Battle extends Process {
 
 	public function new( p_id : String, p_actor1 : Actor, p_actor2 : Actor ) {
 		super( p_id );
-		Helper.assert( !p_actor1.isInBattle && !p_actor2.isInBattle, "actor is already in battle" );
+		Helper.assert(	p_actor1.curState != EActorState.battle &&
+						p_actor2.curState != EActorState.battle,
+						"actor is already in battle" );
 		this.battleActor1 = new BattleActor( p_actor1, this );
 		this.battleActor2 = new BattleActor( p_actor2, this );
 
@@ -24,7 +28,9 @@ class Battle extends Process {
 		// this.battleActor2.isMyTurn = false;
 		// this.battleActor2.isTurnEnded = true;
 
-		this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = true;
+		// this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = true;
+		this.battleActor1.owner.changeState( EActorState.battle );
+		this.battleActor2.owner.changeState( EActorState.battle );
 		trace( "battle begin: " + this.id );
 		
 		this.battleActor1.beginTurn();
@@ -43,14 +49,28 @@ class Battle extends Process {
 
 		if( this.battleActor1.owner.isDead || this.battleActor2.owner.isDead ) {
 			endBattle();
-		} else if( !this.battleActor1.owner.isInBattle || !this.battleActor2.owner.isInBattle ) {
+		} else if( 	this.battleActor1.owner.curState != EActorState.battle ||
+					this.battleActor2.owner.curState != EActorState.battle ) {
 			endBattle();
 		}
 	}
 
 	function endBattle() {
 		trace( "battle end: " + this.id + ", idEnded: " + this.isEnded );
-		this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = false;
+		// this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = false;
+
+		if( Std.is( this.battleActor1.owner, Player ) ) {
+			this.battleActor1.owner.changeState( EActorState.walk );
+		} else {
+			this.battleActor1.owner.changeState( EActorState.idle );
+		}
+
+		if( Std.is( this.battleActor2.owner, Player ) ) {
+			this.battleActor2.owner.changeState( EActorState.walk );
+		} else {
+			this.battleActor2.owner.changeState( EActorState.idle );
+		}
+
 		this.isEnded = true;
 	}
 

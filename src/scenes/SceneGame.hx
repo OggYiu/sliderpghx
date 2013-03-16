@@ -30,6 +30,8 @@ import game.actor.Player;
 import game.Camera;
 import game.DebugDraw;
 import types.EGameEntity;
+import types.EActorState;
+import types.EGemType;
 import game.Global;
 import game.battle.BattleManager;
 import ru.stablex.ui.UIBuilder;
@@ -60,7 +62,6 @@ class SceneGame extends Scene
 	var player : Player = null;
 	var keymap : Hash<Bool> = null;
 	var isPaused : Bool = false;
-	var isRunning : Int = 0;
 
 	public function new( p_parentContext : Sprite ) {
 		super( SceneGame.ID, p_parentContext );
@@ -217,7 +218,8 @@ class SceneGame extends Scene
 		this.columns[2].addTopping( 2, "m1" );
 
 		this.player = new Player( "player", this.gameWorld, "assets/motionwelder/jimmy" );
-		this.player.playWalkAnimation();
+		// this.player.changeState( types.EActorState.walk );
+		// this.player.playWalkAnimation();
 		this.player.transform.y = Math.floor( Settings.ROW_COUNT / 2 ) * Settings.GRID_SIZE;
 		this.player.camera = this.camera;
 		// trace( this.player.gameEntityType );
@@ -375,10 +377,6 @@ class SceneGame extends Scene
 			} 
 		}
 
-		if( !this.player.isInBattle ) {
-			var value : Float = dt * 30;
-			this.player.transform.x += value + ( value * isRunning * 2 );
-		}
 		// this.camera.x = this.player.transform.x;
 		// this.camera.x += dt * 20;
 
@@ -491,12 +489,20 @@ class SceneGame extends Scene
 	}
 
 	function inputRunBeginHandler() : Void {
-		trace( "inputRunBeginHandler" );
-		this.isRunning = 1;
+		Helper.assert( this.player.curState != EActorState.run, "player is already running" );
+		if( this.player.curState != EActorState.run &&
+			this.player.curState != EActorState.battle ) {
+			this.player.changeState( EActorState.run );
+		}
 	}
 
 	function inputRunEndHandler() : Void {
-		trace( "inputRunEndHandler" );
-		this.isRunning = 0;
+		if( this.player.curState == EActorState.run ) {
+			this.player.changeState( EActorState.walk );
+		}
+	}
+
+	function inputGemHandler( p_gemType : EGemType ) : Void {
+		trace( "inputGemHandler: " + p_gemType );
 	}
 }

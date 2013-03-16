@@ -5,6 +5,7 @@ import firerice.types.EOrientation;
 import firerice.core.motionwelder.MReader;
 import types.EGameEntity;
 import types.EActor;
+import types.EActorState;
 import game.battle.BattleManager;
 
 class Player extends Actor {
@@ -15,6 +16,8 @@ class Player extends Actor {
         this.addComponent( new AnimationComponent( this, animPath ) );
 	
 		Global.getInstance().sceneGame.createSensor( this, ( Settings.GRID_SIZE * 3 ) / 4, ( Settings.GRID_SIZE * 3 ) / 4 );
+
+		this.changeState( EActorState.walk );
 	}
 
 	override public function beginContactHandler( entity : GameEntity ) : Void {
