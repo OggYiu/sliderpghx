@@ -31,7 +31,7 @@ import game.Camera;
 import game.DebugDraw;
 import types.EGameEntity;
 import game.Global;
-import game.BattleManager;
+import game.battle.BattleManager;
 
 /**
  * ...
@@ -62,6 +62,8 @@ class SceneGame extends Scene
 
 	public function new( p_parentContext : Sprite ) {
 		super( SceneGame.ID, p_parentContext );
+
+		game.EffectManager.getInstance().context = this.context;
 		game.Global.getInstance().sceneGame = this;
 		
 		Lib.current.stage.addEventListener( MouseEvent.MOUSE_DOWN, onMouseDown );
@@ -213,6 +215,7 @@ class SceneGame extends Scene
 		this.columns[2].addTopping( 2, "m1" );
 
 		this.player = new Player( "player", this.gameWorld, "assets/motionwelder/jimmy" );
+		this.player.playWalkAnimation();
 		this.player.transform.y = Math.floor( Settings.ROW_COUNT / 2 ) * Settings.GRID_SIZE;
 		this.player.camera = this.camera;
 		// trace( this.player.gameEntityType );
@@ -364,7 +367,7 @@ class SceneGame extends Scene
 		}
 
 		if( !this.player.isInBattle ) {
-			this.player.transform.x += dt * 20;
+			this.player.transform.x += dt * 30;
 		}
 		// this.camera.x = this.player.transform.x;
 		// this.camera.x += dt * 20;
@@ -458,7 +461,7 @@ class SceneGame extends Scene
     	this.keymap.set( event.keyCode + "", true );
     	if( event.keyCode == 32 ) {
     		this.isPaused = !this.isPaused;
-    	}
+    	} 
     	// trace( "event.keycode: " + event.keyCode + ", true" );
     }
 

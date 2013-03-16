@@ -1,8 +1,11 @@
 package game;
 
 import firerice.components.AnimationComponent;
+import firerice.types.EOrientation;
+import firerice.core.motionwelder.MReader;
 import types.EGameEntity;
 import types.EActor;
+import game.battle.BattleManager;
 
 class Player extends Actor {
 	public function new( p_id : String, p_parent : Dynamic, animPath : String ) {
@@ -34,10 +37,18 @@ class Player extends Actor {
 		switch( entity.gameEntityType ) {
 			case EGameEntity.grid: {
 				var grid : Grid = cast( entity, Grid );
-				trace( "endContactHandler, grid: " + grid.id );
+				// trace( "endContactHandler, grid: " + grid.id );
 				grid.parentColumn.releaseColumn();
 			}
 			default:
 		}
+	}
+
+	override public function playWalkAnimation() : Void {
+		// trace( "playWalkAnimation playWalkAnimation" );
+		this.animation.animator.play(	3,
+										EOrientation.none,
+										WrapMode.loop,
+										true );
 	}
 }

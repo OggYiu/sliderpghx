@@ -226,66 +226,7 @@ class MAnimationSet {
 			}
 		}
 	}
-
-	// public function update( deltaTime : Float ) : Void {
-	// 	if( g_paused || paused_ )
-	// 		return;
-		
-	// 	var currentMFrame : MFrame = this.currentFrame;
-	// 	if( currentMFrame == null ) {
-	// 		setFrame(0);
-	// 		return ;
-	// 	}
-
-	// 	if (currentAnimation_ != null && currentAnimation_.frames != null)
-	// 	{
-	// 		currClipTime_ += deltaTime;
-	// 		if (currWrapMode_ == WrapMode.loop)
-	// 		{
-	// 			if( currClipTime_ >= currentMFrame.delayCount ) {
-	// 				var currFrame : Int = ( previousFrame_ + 1 ) % currentAnimation_.frames.length;
-	// 				setFrame(currFrame);
-	// 				currClipTime_ = 0;
-	// 			}
-	// 			// var currFrame : Int = Std.int(currClipTime_) % currentAnimation_.frames.length;
-	// 			// setFrame(currFrame);
-	// 		}
-	// 		// else if (currWrapMode_ == WrapMode.loopSection)
-	// 		// {
-	// 		// 	var currFrame : Int = Std.int(currClipTime_);
-	// 		// 	if (currFrame >= currentAnimation_.loopStart)
-	// 		// 	{
-	// 		// 		currFrame = currentAnimation_.loopStart + ((currFrame - currentAnimation_.loopStart) % (currentAnimation_.frames.length - currentAnimation_.loopStart));
-	// 		// 	}
-	// 		// 	setFrame(currFrame);
-	// 		// }
-	// 		// else if (currWrapMode_ == WrapMode.pingPong)
-	// 		// {
-	// 		// 	var currFrame : Int = Std.int(currClipTime_) % (currentAnimation_.frames.length + currentAnimation_.frames.length - 2);
-	// 		// 	if (currFrame >= currentAnimation_.frames.length)
-	// 		// 	{
-	// 		// 		var i : Int = currFrame - currentAnimation_.frames.length;
-	// 		// 		currFrame = currentAnimation_.frames.length - 2 - i;
-	// 		// 	}
-	// 		// 	setFrame(currFrame);
-	// 		// }
-	// 		// else if (currWrapMode_ == WrapMode.once)
-	// 		// {
-	// 		// 	var currFrame : Int = Std.int(currClipTime_);
-	// 		// 	if (currFrame >= currentAnimation_.frames.length)
-	// 		// 	{
-	// 		// 		currentAnimation_ = null;
-	// 		// 		onCompleteAnimation();
-	// 		// 	}
-	// 		// 	else
-	// 		// 	{
-	// 		// 		setFrame(currFrame);
-	// 		// 	}
-				
-	// 		// }
-	// 	}
-	// }
-
+	
 	public function log( append : String = "" ) : Void {
 		trace( append + "\t/////////MAnimationSet" );
 		trace( append + "\tclipId: " + currClipId_ );

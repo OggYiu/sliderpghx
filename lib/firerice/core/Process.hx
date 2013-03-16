@@ -7,16 +7,15 @@ import nme.events.IEventDispatcher;
  * ...
  * @author oggyiu
  */
-
 class Process
 {
     var disposed_ : Bool = false;
     var inited_ : Bool = false;
-	
+
 	public var id( default, null ) : String = "";
-	
+
 	//public var args( default, null ) : Dynamic;
-	
+
 	public function new( p_id : String ) {
         if( p_id == null ) {
             p_id = "";

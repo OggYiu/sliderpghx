@@ -131,7 +131,7 @@ class Column extends Entity {
 	}
 
 	public function alignToGrid() : Void {
-		trace( "\n" );
+		// trace( "\n" );
 		for( grid in this.grids ) {
 			// alignY = grid.transform.y % Settings.GRID_SIZE;
 			alignY = Math.abs( grid.transform.y );

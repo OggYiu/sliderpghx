@@ -52,47 +52,7 @@ class AnimationComponent extends Component, implements IDisplayable
         this.animator = MReader.read( spriteData );
         this.animator.setEventReceiver( this, AnimationCompleteHandler, AnimationEventHandler );
         this.animator.play(0, EOrientation.none, WrapMode.loop, true );
-        // trace( "this.animator: " + this.animator );
-//this.animator.targetCallbackObj = this;
-//this.animator.animationCompleteDelegate = AnimationCompleteHandler;
-//this.animator.animationEventDelegate = AnimationEventHandler;
-
-//var bitmap : Bitmap = new Bitmap();
-//bitmap.bitmapData = this.animator.currentFrame.frameImages[0].bitmapdata;
-//this.context.addChild( bitmap );
     }
-	//public function createEntity( type : EntityType, x: Int, y : Int, dirX : Int, dirY : Int ) : GameEntity {
-		//var newEntity : GameEntity = null;
-		//var animDef : MAnimationDefine = new MAnimationDefine();
-		//var animId : Int = 0;
-//
-		//var spriteData : MSpriteData;
-		//spriteData = MSpriteLoader.getInstance().loadMSprite( "characters", true, ResourceLoader.getInstance() );
-		//animationSet_ = MReader.read( spriteData );
-		//
-		//switch( type ) {
-			//case EntityType.footman:
-				//animId = 0;
-			//case EntityType.whiteWizard:
-				//animId = 4;
-		//}
-//
-		//animDef.addAnim( "r_walk", animId++ );
-		//animDef.addAnim( "l_walk", animId++ );
-		//animDef.addAnim( "f_walk", animId++ );
-		//animDef.addAnim( "b_walk", animId++ );
-//
-		//newEntity = new GameEntity(	_kernel,
-									//animationSet_,
-									//animDef,
-									//this );
-		//newEntity.x = x * TILE_SIZE + TILE_SIZE / 2;
-		//newEntity.y = y * TILE_SIZE + TILE_SIZE / 2;
-		//newEntity.dirX = dirX;
-		//newEntity.dirY = dirY;
-//
-		//return newEntity;
-	//}
 	
 	override private function update_(dt:Float):Void 
 	{
@@ -123,5 +83,11 @@ class AnimationComponent extends Component, implements IDisplayable
 			Reflect.callMethod( this.target, frameHandler, [ animationSet, animation, frame, unknown ] );
 		}
 		 //trace( "<MGameEntity::AnimationEventHandler>, contextBitmap_.bitmapData: " + contextBitmap_.bitmapData );
+	}
+
+	public function resetHandler() : Void {
+   		this.target = null;
+   		this.completeHandler = null;
+   		this.frameHandler = null;
 	}
 }
