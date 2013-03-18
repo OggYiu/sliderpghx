@@ -12,6 +12,7 @@ class Helper
 	static private inline var MIN_FLOAT : Float = 0.0001;
 	static private inline var RAD_TO_DEGREE : Float = 57.2957795;
 	static private inline var DEGREE_TO_RAD : Float = 0.0174532925;
+	static public var SHOW_LOG_MESSAGE : Bool = true;
 
 	public function new() 
 	{
@@ -38,7 +39,9 @@ class Helper
 	}
 	
 	public static inline function log( message : String ) : Void {
-		trace( message );
+		if( Helper.SHOW_LOG_MESSAGE ) {
+			trace( message );
+		}
 	}
 	
 	#if !debug

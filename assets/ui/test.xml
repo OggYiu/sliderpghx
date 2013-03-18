@@ -3,6 +3,9 @@
 <!-- <Text left="0" top="100" text="'Hello how are you baby!!'"/> -->
 
 <Widget skin:Paint-border="0" w="480" h="320" left="0" top="0">
+	<Text left="10" top="10" text="'Lv'"/>
+	<Text id="'labelLevel'" left="20" top="10" text="'01'"/>
+	<Bmp left="10" top="20" w="64" h="64" src="'assets/ui/portrait_jimmy.png'"/>
 	<Button left="20" top="250" w="80" h="20" text="'escape'" skin:Paint-color="0xbbbbbb" on-mouseDown="@sceneGame.inputEscapeHandler();"/>
 	<Button left="20" top="280" w="80" h="20" text="'run'" skin:Paint-color="0xbbbbbb" on-mouseDown="@sceneGame.inputRunBeginHandler();" on-mouseUp="@sceneGame.inputRunEndHandler();"/>
 	<Button left="380" top="220" w="80" h="20" text="'red'" skin:Paint-color="0xbbbbbb" on-mouseDown="@sceneGame.inputGemHandler(EGemType.red);" on-mouseUp="@sceneGame.inputRunEndHandler();"/>

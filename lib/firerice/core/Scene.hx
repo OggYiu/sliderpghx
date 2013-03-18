@@ -24,7 +24,7 @@ class Scene extends Process, implements IEntityCollection, implements IDisplayab
 	var parentContext_ : Sprite = null;
 	
 	public function new( p_id : String, p_parentContext : Sprite ) {
-		trace( "scene created: " + p_id );
+		Helper.log( "scene created: " + p_id );
 		super( p_id );
 		
 		// init

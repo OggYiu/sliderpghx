@@ -30,7 +30,6 @@ import minimalcomps.Style;
 class RayTrace extends Sprite {
 	// commands
 	public static var COMMAND_CLEAR : String = "rayTraceCommand:clear";
-
 	public static var CONNECTION_NAME : String = "_RayTrace_V4.1.0_";
 
 	private var lc:LocalConnection;

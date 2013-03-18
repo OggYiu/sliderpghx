@@ -71,6 +71,8 @@ class SceneGame extends Scene
 	var bgMusicChannel : SoundChannel = null;
 
 	public function new( p_parentContext : Sprite ) {
+		Helper.SHOW_LOG_MESSAGE = false;
+		
 		super( SceneGame.ID, p_parentContext );
 
 		game.Global.getInstance().sceneGame = this;

@@ -31,7 +31,7 @@ class Battle extends Process {
 		// this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = true;
 		this.battleActor1.owner.changeState( EActorState.battle );
 		this.battleActor2.owner.changeState( EActorState.battle );
-		trace( "battle begin: " + this.id );
+		Helper.log( "battle begin: " + this.id );
 		
 		this.battleActor1.beginTurn();
 		// this.battleActor2.beginTurn();
@@ -56,7 +56,7 @@ class Battle extends Process {
 	}
 
 	function endBattle() {
-		trace( "battle end: " + this.id + ", idEnded: " + this.isEnded );
+		Helper.log( "battle end: " + this.id + ", idEnded: " + this.isEnded );
 		// this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = false;
 
 		if( Std.is( this.battleActor1.owner, Player ) ) {
