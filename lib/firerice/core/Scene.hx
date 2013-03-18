@@ -19,7 +19,7 @@ class Scene extends Process, implements IEntityCollection, implements IDisplayab
 {
 	public var entities( default, null ) : Hash<Entity> = null;
 	public var context( default, null ) : Sprite = null;
-    public var camera( default, null ) : Camera = null;
+    // public var camera( default, null ) : Camera = null;
 
 	var parentContext_ : Sprite = null;
 	
@@ -31,7 +31,7 @@ class Scene extends Process, implements IEntityCollection, implements IDisplayab
 		entities = new Hash<Entity>();
 		context = new Sprite();
 		// this.camera = new Camera( "camera", this );
-		this.camera = new Camera();
+		// this.camera = new Camera();
 		parentContext_ = p_parentContext;
 		parentContext_.addChild( context );
 		new Label( context, 0, 0, p_id );
@@ -67,8 +67,8 @@ class Scene extends Process, implements IEntityCollection, implements IDisplayab
 			}
 		}
 
-		this.context.x = -this.camera.x;
-		this.context.y = -this.camera.y;
+		// this.context.x = -this.camera.x;
+		// this.context.y = -this.camera.y;
 	}
 	
 	override private function dispose_():Void 

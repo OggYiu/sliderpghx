@@ -44,7 +44,7 @@ class Player extends Actor {
 				if( grid.contextPos.x <= this.contextPos.x ) {
 					// trace( "grid.transform.x: " + grid.transform.x );
 					// trace( "this.transform.x: " + this.transform.x );
-					grid.parentColumn.releaseColumn();
+					// grid.parentColumn.releaseColumn();
 				}
 			}
 			default:

@@ -155,7 +155,7 @@ class Column extends Entity {
 	}
 
 	public function alignNow() {
-		trace( "align now: " + this.alignY  );
+		// trace( "align now: " + this.alignY  );
 		if( Helper.isZero( this.alignY ) ) {
 			return ;
 		}

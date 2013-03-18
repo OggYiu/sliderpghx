@@ -2,6 +2,9 @@ package game.battle.moves.attack;
 
 import types.EMoveAttack;
 import game.battle.BattleActor;
+import nme.Assets;
+import nme.media.Sound;
+import nme.media.SoundChannel;
 
 class NormalAttack extends AttackBase {
 	public function new( p_battleActor : BattleActor ) {
@@ -18,6 +21,8 @@ class NormalAttack extends AttackBase {
 
 	function animCompleteHandler() : Void {
 		endMove();
+		var sound : Sound = Assets.getSound ("assets/audio/sound/swordSlash.mp3");
+		sound.play( 0, 1 );
 
 		this.battleActor.owner.hurtOthers( this.battleActor.enemy.owner, this.battleActor.owner.damage );
 	}

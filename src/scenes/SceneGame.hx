@@ -2,6 +2,7 @@ package scenes;
 import firerice.core.Scene;
 import firerice.core.Kernal;
 import firerice.core.Entity;
+import firerice.core.Camera;
 import firerice.common.Helper;
 import firerice.components.TransformComponent;
 import nme.display.Sprite;
@@ -11,6 +12,8 @@ import nme.Assets;
 import nme.events.MouseEvent;
 import nme.events.KeyboardEvent;
 import nme.Lib;
+import nme.media.Sound;
+import nme.media.SoundChannel;
 import minimalcomps.Label;
 import box2D.collision.shapes.B2PolygonShape;
 import box2D.common.math.B2Vec2;
@@ -27,14 +30,13 @@ import game.Column;
 import game.Settings;
 import game.actor.Monster;
 import game.actor.Player;
-import game.Camera;
 import game.DebugDraw;
+import game.Global;
+import game.battle.BattleManager;
+import game.ui.GameUI;
 import types.EGameEntity;
 import types.EActorState;
 import types.EGemType;
-import game.Global;
-import game.battle.BattleManager;
-import ru.stablex.ui.UIBuilder;
 
 /**
  * ...
@@ -44,7 +46,10 @@ import ru.stablex.ui.UIBuilder;
 class SceneGame extends Scene
 {
 	public static var ID : String = "sceneGame";
+	public var camera( default, null ) : Camera = null;
 
+	var gameUI : GameUI = null;
+	var gameWorldContainer : Entity = null;
 	var world : B2World = null;
 	var debugSprite : Sprite = null;
 	var contactListener : ContactListener = null;
@@ -62,11 +67,12 @@ class SceneGame extends Scene
 	var player : Player = null;
 	var keymap : Hash<Bool> = null;
 	var isPaused : Bool = false;
+	var bgMusic : Sound = null;
+	var bgMusicChannel : SoundChannel = null;
 
 	public function new( p_parentContext : Sprite ) {
 		super( SceneGame.ID, p_parentContext );
 
-		game.EffectManager.getInstance().context = this.context;
 		game.Global.getInstance().sceneGame = this;
 		
 		Lib.current.stage.addEventListener( MouseEvent.MOUSE_DOWN, onMouseDown );
@@ -100,6 +106,13 @@ class SceneGame extends Scene
 		// createSensor (50, 50, 30, 30, true);
 		// createSensor (70, 50, 30, 30, true);
 
+		this.gameWorldContainer = new Entity( "gameWorldContainer", this );
+		this.gameWorldContainer.addComponent( new TransformComponent( this.gameWorldContainer, 0, 0 ) );
+		this.gameWorldContainer.transform.x = 0;
+		this.gameWorldContainer.transform.y = 0;
+		this.camera = new Camera( "sceneGameCamera", this.gameWorldContainer );
+		game.EffectManager.getInstance().context = this.gameWorldContainer.context;
+		
 		{
 			this.bgs = new Array<Sprite>();
 			var bg1 : Sprite = new Sprite();
@@ -109,8 +122,8 @@ class SceneGame extends Scene
 			bg2.x = bg1.x + bg1.width;
 			this.bgs.push( bg1 );
 			this.bgs.push( bg2 );
-			this.context.addChild( bg1 );
-			this.context.addChild( bg2 );
+			this.gameWorldContainer.context.addChild( bg1 );
+			this.gameWorldContainer.context.addChild( bg2 );
 		}
 		
 		{
@@ -123,8 +136,8 @@ class SceneGame extends Scene
 			bg2.y = bg1.y = Settings.SCREEN_HEIGHT - bg1.height;
 			this.botBgs.push( bg1 );
 			this.botBgs.push( bg2 );
-			this.context.addChild( bg1 );
-			this.context.addChild( bg2 );
+			this.gameWorldContainer.context.addChild( bg1 );
+			this.gameWorldContainer.context.addChild( bg2 );
 		}
 
 		{
@@ -136,8 +149,8 @@ class SceneGame extends Scene
 			bg2.x = bg1.x + bg1.width;
 			this.topBgs.push( bg1 );
 			this.topBgs.push( bg2 );
-			this.context.addChild( bg1 );
-			this.context.addChild( bg2 );
+			this.gameWorldContainer.context.addChild( bg1 );
+			this.gameWorldContainer.context.addChild( bg2 );
 		}
 
 		{
@@ -149,8 +162,8 @@ class SceneGame extends Scene
 			bg2.x = bg1.x + bg1.width;
 			this.topFgs.push( bg1 );
 			this.topFgs.push( bg2 );
-			this.context.addChild( bg1 );
-			this.context.addChild( bg2 );
+			this.gameWorldContainer.context.addChild( bg1 );
+			this.gameWorldContainer.context.addChild( bg2 );
 		}
 
 		{
@@ -163,8 +176,8 @@ class SceneGame extends Scene
 			bg2.y = bg1.y = - bg1.height / 2;
 			this.topFogs.push( bg1 );
 			this.topFogs.push( bg2 );
-			this.context.addChild( bg1 );
-			this.context.addChild( bg2 );
+			this.gameWorldContainer.context.addChild( bg1 );
+			this.gameWorldContainer.context.addChild( bg2 );
 		}
 
 		{
@@ -177,8 +190,8 @@ class SceneGame extends Scene
 			bg2.y = bg1.y = Settings.SCREEN_HEIGHT - bg1.height / 2;
 			this.botFogs.push( bg1 );
 			this.botFogs.push( bg2 );
-			this.context.addChild( bg1 );
-			this.context.addChild( bg2 );
+			this.gameWorldContainer.context.addChild( bg1 );
+			this.gameWorldContainer.context.addChild( bg2 );
 		}
 		
 		// {
@@ -202,7 +215,8 @@ class SceneGame extends Scene
 		// 	}
 		// }
 
-		this.gameWorld = new Entity( "gameWorld", this );
+		this.gameWorld = new Entity( "gameWorld", this.gameWorldContainer );
+		// this.gameWorld = new Entity( "gameWorld", this.gameWorld );
 		this.gameWorld.addComponent( new TransformComponent( this.gameWorld, 0, 0 ) );
 		this.gameWorld.transform.x = Settings.GAME_WORLD_X;
 		this.gameWorld.transform.y = Settings.GAME_WORLD_Y;
@@ -241,12 +255,11 @@ class SceneGame extends Scene
 		// debug sprite in the toppest level
 		this.context.addChild( debugSprite );
 
-		// init ui
-        UIBuilder.init();
-        UIBuilder.regClass('SceneGame');
-        this.context.addChild( UIBuilder.buildFn('assets/ui/test.xml')( {
-        	sceneGame : this
-        }) );
+		this.gameUI = new GameUI( "gameUI", this );
+
+		this.bgMusic = Assets.getSound ("assets/audio/music/overworld.mp3");
+		this.bgMusicChannel = this.bgMusic.play( 0, 10000 );
+       	// this.update( 0 );
     }
 
 	// public function createSensor (x:Float, y:Float, width:Float, height:Float, dynamicBody:Bool):B2Body {
@@ -377,8 +390,9 @@ class SceneGame extends Scene
 			} 
 		}
 
-		// this.camera.x = this.player.transform.x - 100;
+		this.camera.x = this.player.transform.x - 100;
 		// this.camera.x += dt * 20;
+		this.camera.update( dt );
 
 		var cameraSpeed : Float = 200;
 		if( this.keymap.exists( "37" ) && this.keymap.get( "37" ) ) {
@@ -482,6 +496,7 @@ class SceneGame extends Scene
 		super.dispose_();
 		
 		Global.getInstance().sceneGame = null;
+		this.bgMusicChannel.stop();
 	}
 
 	function inputEscapeHandler() : Void {
