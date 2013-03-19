@@ -14,10 +14,11 @@ class GameEntity extends Entity {
 	public var sensorWidth( default, default ) : Float = 0;
 	public var sensorHeight( default, default ) : Float = 0;
 
-	public function new( p_id : String, p_parent : Dynamic ) {
+	public function new( p_id : String, p_parent : Dynamic, p_gameEntityType : EGameEntity ) {
 		super( p_id, p_parent );
 
-		this.gameEntityType = EGameEntity.unknown;
+		// this.gameEntityType = EGameEntity.unknown;
+		this.gameEntityType = p_gameEntityType;
 		this.addComponent( new TransformComponent( this, 0, 0 ) );
 	}
 

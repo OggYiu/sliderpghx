@@ -220,4 +220,9 @@ class Entity extends Process, implements IEntityCollection, implements IComponen
 		point = this.context.localToGlobal( new Point( 0, 0 ) );
 		return point;
 	}
+
+	// public function clone() : Entity {
+	// 	var cloneEntity : Entity = new Entity( this.id = "_clone", this.parent );
+	// 	return cloneEntity;
+	// }
 }

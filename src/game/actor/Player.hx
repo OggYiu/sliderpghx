@@ -1,5 +1,6 @@
 package game.actor;
 
+import firerice.common.Helper;
 import firerice.components.AnimationComponent;
 import firerice.types.EOrientation;
 import firerice.core.motionwelder.MReader;
@@ -10,9 +11,9 @@ import game.battle.BattleManager;
 
 class Player extends Actor {
 	public function new( p_id : String, p_parent : Dynamic, animPath : String ) {
-		super( p_id, p_parent, EActor.jimmy );
+		super( p_id, p_parent, EGameEntity.player, EActor.jimmy );
 
-		this.gameEntityType = EGameEntity.player;
+		// this.gameEntityType = EGameEntity.player;
         this.addComponent( new AnimationComponent( this, animPath ) );
 	
 		Global.getInstance().sceneGame.createSensor( this, ( Settings.GRID_SIZE * 3 ) / 4, ( Settings.GRID_SIZE * 3 ) / 4 );
@@ -32,7 +33,12 @@ class Player extends Actor {
 				var monster : Monster = cast( entity, Monster );
 				BattleManager.getInstance().beginBattle( this, monster );
 			}
-			default:
+			case EGameEntity.item : {
+				trace( "item touched" );
+				var item : Item = cast( entity, Item );
+				item.receivedHandler( this );
+			}
+			default: Helper.assert( false, "unhandled type : " + entity.gameEntityType );
 		}
 	}
 

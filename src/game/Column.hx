@@ -9,6 +9,7 @@ import game.actor.Actor;
 import game.actor.Monster;
 import game.actor.Player;
 import types.EGameEntity;
+import types.EItem;
 import com.eclecticdesignstudio.motion.Actuate;
 
 class Column extends Entity {
@@ -207,6 +208,23 @@ class Column extends Entity {
 
 		this.grids[targetIndex].addTopping( actor );
 	}
+
+	public function addToppingItem( gridIndex : Int, p_type : EItem, p_level ) : Void {
+		Helper.assert( ( gridIndex >= 0 && gridIndex < this.grids.length ), "invalid gridIndex" );
+
+		var targetGrid : Grid = null;
+		var item : Item = null;
+
+		targetGrid = this.grids[gridIndex];
+		item = new Item( "item_on_" + targetGrid.id, targetGrid, p_type, p_level );
+		this.grids[gridIndex].addTopping( item );
+		item.camera = this.camera;
+
+		targetGrid = this.grids[( gridIndex + Settings.ROW_COUNT ) % ( Settings.ROW_COUNT * 2 )];
+		item = new Item( "item_on_" + targetGrid.id, targetGrid, p_type, p_level );
+		this.grids[gridIndex].addTopping( item );
+		item.camera = this.camera;
+	} 
 
 	public function removeTopping( gridIndex : Int ) {
 	}

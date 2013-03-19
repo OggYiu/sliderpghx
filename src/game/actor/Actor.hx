@@ -4,6 +4,7 @@ import types.EActor;
 import types.EActorState;
 import types.EGemType;
 import types.ESkill;
+import types.EGameEntity;
 import types.EMoveType;
 import firerice.types.EOrientation;
 import firerice.core.motionwelder.MReader;
@@ -24,8 +25,8 @@ class Actor extends GameEntity {
 	public var actorCNS( default, null ) : ActorCNS;
 	public var actorStateMachine( default, null ) : ActorStateMachine = null;
 	
-	public function new( p_id : String, p_parent : Dynamic, p_actorType : EActor ) {
-		super( p_id, p_parent );
+	public function new( p_id : String, p_parent : Dynamic, p_gameEntityType : EGameEntity, p_actorType : EActor ) {
+		super( p_id, p_parent, p_gameEntityType );
 
 		this.actorStateMachine = new ActorStateMachine( this );
 

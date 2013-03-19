@@ -37,6 +37,7 @@ import game.ui.GameUI;
 import types.EGameEntity;
 import types.EActorState;
 import types.EGemType;
+import types.EItem;
 
 /**
  * ...
@@ -232,6 +233,7 @@ class SceneGame extends Scene
 			this.columns.push( column );
 		}
 		this.columns[2].addTopping( 2, "m1" );
+		this.columns[3].addToppingItem( 3, EItem.potion, 1 );
 
 		this.player = new Player( "player", this.gameWorld, "assets/motionwelder/jimmy" );
 		// this.player.changeState( types.EActorState.walk );
@@ -259,8 +261,10 @@ class SceneGame extends Scene
 
 		this.gameUI = new GameUI( "gameUI", this );
 
-		this.bgMusic = Assets.getSound ("assets/audio/music/overworld.mp3");
-		this.bgMusicChannel = this.bgMusic.play( 0, 10000 );
+		if( Settings.PLAY_BG_MUSIC ) {
+			this.bgMusic = Assets.getSound ("assets/audio/music/overworld.mp3");
+			this.bgMusicChannel = this.bgMusic.play( 0, 10000 );
+       	}
        	// this.update( 0 );
     }
 
@@ -498,7 +502,9 @@ class SceneGame extends Scene
 		super.dispose_();
 		
 		Global.getInstance().sceneGame = null;
-		this.bgMusicChannel.stop();
+		if( this.bgMusicChannel != null ) {
+			this.bgMusicChannel.stop();
+		}
 	}
 
 	function inputEscapeHandler() : Void {

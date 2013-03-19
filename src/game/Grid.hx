@@ -7,8 +7,10 @@ import nme.display.Graphics;
 import minimalcomps.Label;
 import scenes.SceneGame;
 import types.EGameEntity;
+import types.EItem;
 import game.Column;
 import game.actor.Actor;
+import game.GameEntity;
 
 class Grid extends GameEntity {
 	// public var pos( default, default ) : Int = 0;
@@ -19,9 +21,9 @@ class Grid extends GameEntity {
 	var label : Label = null;
 
 	public function new( p_id : String, p_width : Int, p_height : Int, p_parent : Column ) {
-		super( p_id, p_parent );
+		super( p_id, p_parent, EGameEntity.grid );
 
-		this.gameEntityType = EGameEntity.grid;
+		// this.gameEntityType = EGameEntity.grid;
 		// this.pos = p_pos;
 		this.width = p_width;
 		this.height = p_height;
@@ -53,14 +55,22 @@ class Grid extends GameEntity {
 		super.dispose_();
 	}
 
-	public function clone( p_id : String ) : Grid {
+	public function clone( p_id : String ) : Entity {
 		return new Grid( p_id, this.width, this.height, this.parent );
 	}
 
-	public function addTopping( gameEntity : Actor ) {
+	// public function addToppingItem( p_type : EItem, p_level : Int ) : Item {
+	// 	var item : Item = new Item( "item_on_" + this.id, this.parent, p_level );
+	// 	return item;
+	// }
+
+	// public function addToppingItem( p_item : Item ) : Void {
+	// 	this.topping = p_item;
+	// }
+
+	public function addTopping( gameEntity : GameEntity ) {
 		// this.grids[0].addTopping( new Monster( "monster1", this.grids[0], "assets/motionwelder/m1" ) );
 		this.topping = gameEntity;
-
 	}
 	// public function setTopping( p_topping : Int ) : Void {
 	// 	this.topping = p_topping;
