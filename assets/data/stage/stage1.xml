@@ -1,0 +1,26 @@
+<stage>
+	<level>1</level>
+	<data>
+		<!--
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+
+		<grid id=""></grid>
+		<grid id="red_slime" level="1"></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+		<grid id=""></grid>
+-->
+		<grid id="red_slime" level="1"></grid>
+		<grid id="potion" level="1"></grid>
+	</data>
+</stage>

@@ -4,7 +4,7 @@ import box2D.dynamics.B2ContactListener;
 import box2D.dynamics.contacts.B2Contact;
 import box2D.dynamics.B2ContactImpulse;
 import box2D.collision.B2Manifold;
-import game.GameEntity;
+import game.entity.GameEntity;
 
 class ContactListener extends B2ContactListener {	
 	public function new () {

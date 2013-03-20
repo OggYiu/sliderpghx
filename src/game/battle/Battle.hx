@@ -2,8 +2,8 @@ package game.battle;
 
 import firerice.core.Process;
 import firerice.common.Helper;
-import game.actor.Actor;
-import game.actor.Player;
+import game.entity.Actor;
+import game.entity.Player;
 import types.EActorState;
 
 class Battle extends Process {

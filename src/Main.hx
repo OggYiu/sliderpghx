@@ -27,9 +27,9 @@ class Main extends Sprite
 		super();
 
 		// #if flash
-		// var console_sender_ : ConsoleSender;
-  //   	console_sender_ = new ConsoleSender();
-	 //    trace ( RayTrace.COMMAND_CLEAR );
+		var console_sender_ : ConsoleSender;
+    	console_sender_ = new ConsoleSender();
+	    trace ( RayTrace.COMMAND_CLEAR );
 	 //    #end
 
 		#if iphone

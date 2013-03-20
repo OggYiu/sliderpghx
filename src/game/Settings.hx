@@ -6,8 +6,8 @@ class Settings {
 	public static var SCREEN_HEIGHT : Int = 0;
 	public static var GAME_WIDTH : Int = 480;
 	public static var GAME_HEIGHT : Int = 250;
-	public static var ROW_COUNT : Int = 0;
-	public static var COLUMN_COUNT : Int = 0;
+	public static var ROW_COUNT : Int = Math.ceil( Settings.GAME_HEIGHT / Settings.GRID_SIZE );
+	public static var COLUMN_COUNT : Int = Math.ceil( Settings.GAME_WIDTH / Settings.GRID_SIZE );
 	public static var GAME_WORLD_X : Int = 0;
 	public static var GAME_WORLD_Y : Int = 50;
 	public static var PLAY_BG_MUSIC : Bool = false;

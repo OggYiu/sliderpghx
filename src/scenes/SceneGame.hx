@@ -23,15 +23,16 @@ import box2D.dynamics.B2DebugDraw;
 import box2D.dynamics.B2FixtureDef;
 import box2D.dynamics.B2World;
 
-import game.GameEntity;
+import game.entity.GameEntity;
 import game.ContactListener;
 import game.Grid;
 import game.Column;
 import game.Settings;
-import game.actor.Monster;
-import game.actor.Player;
+import game.entity.Monster;
+import game.entity.Player;
 import game.DebugDraw;
 import game.Global;
+import game.StageInfo;
 import game.battle.BattleManager;
 import game.ui.GameUI;
 import types.EGameEntity;
@@ -49,6 +50,7 @@ class SceneGame extends Scene
 	public static var ID : String = "sceneGame";
 	public var camera( default, null ) : Camera = null;
 
+	var stageInfo : StageInfo = null;
 	var gameUI : GameUI = null;
 	var gameWorldContainer : Entity = null;
 	var world : B2World = null;
@@ -86,6 +88,9 @@ class SceneGame extends Scene
 
 		this.keymap = new Hash<Bool>();
 
+		this.stageInfo = new StageInfo();
+		this.stageInfo.read( "assets/data/stage/stage1.xml" );
+		
 		// world = new B2World( new B2Vec2 (0, 10.0), true );
 		world = new B2World( new B2Vec2 (0, 0), false );
 		debugSprite = new Sprite();
@@ -102,8 +107,8 @@ class SceneGame extends Scene
 
 		// Settings.GAME_WIDTH = Std.int( Settings.SCREEN_WIDTH );
 		// Settings.GAME_HEIGHT = Std.int( ( Settings.SCREEN_HEIGHT * 3 ) / 4 );
-		Settings.COLUMN_COUNT = Math.ceil( Settings.GAME_WIDTH / Settings.GRID_SIZE );
-		Settings.ROW_COUNT = Math.ceil( Settings.GAME_HEIGHT / Settings.GRID_SIZE );
+		// Settings.COLUMN_COUNT = Math.ceil( Settings.GAME_WIDTH / Settings.GRID_SIZE );
+		// Settings.ROW_COUNT = Math.ceil( Settings.GAME_HEIGHT / Settings.GRID_SIZE );
 
 		// Settings.log();
 		// createSensor (50, 50, 30, 30, true);

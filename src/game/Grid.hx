@@ -9,8 +9,8 @@ import scenes.SceneGame;
 import types.EGameEntity;
 import types.EItem;
 import game.Column;
-import game.actor.Actor;
-import game.GameEntity;
+import game.entity.Actor;
+import game.entity.GameEntity;
 
 class Grid extends GameEntity {
 	// public var pos( default, default ) : Int = 0;

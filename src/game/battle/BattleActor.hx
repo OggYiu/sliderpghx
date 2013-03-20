@@ -1,8 +1,8 @@
 package game.battle;
 
 import firerice.core.Process;
-import game.actor.Actor;
-import game.actor.Player;
+import game.entity.Actor;
+import game.entity.Player;
 import game.battle.moves.attack.AttackBase;
 import game.battle.moves.attack.NormalAttack;
 import game.battle.moves.attack.MultipleAttack;
