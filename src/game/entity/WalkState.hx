@@ -2,6 +2,7 @@ package game.entity;
 
 import firerice.core.Process;
 import types.EActorState;
+import game.Settings;
 
 class WalkState extends ActorState {
 	public function new( p_owner : Actor ) {
@@ -21,6 +22,6 @@ class WalkState extends ActorState {
 	override function update_( dt : Float ) : Void {
 		super.update_( dt );
 
-		this.owner.transform.x += dt * 30;
+		this.owner.transform.x += dt * Settings.PLAYER_WALK_SPEED;
 	}
 }

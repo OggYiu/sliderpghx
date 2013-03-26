@@ -1,18 +1,23 @@
 package game;
 
 class Settings {
-	public static var GRID_SIZE : Int = 50;
+	public inline static var GRID_SIZE : Int = 50;
 	public static var SCREEN_WIDTH : Int = 0;
 	public static var SCREEN_HEIGHT : Int = 0;
-	public static var GAME_WIDTH : Int = 480;
-	public static var GAME_HEIGHT : Int = 250;
-	public static var ROW_COUNT : Int = Math.ceil( Settings.GAME_HEIGHT / Settings.GRID_SIZE );
-	public static var COLUMN_COUNT : Int = Math.ceil( Settings.GAME_WIDTH / Settings.GRID_SIZE );
-	public static var GAME_WORLD_X : Int = 0;
-	public static var GAME_WORLD_Y : Int = 50;
-	public static var PLAY_BG_MUSIC : Bool = false;
+	public inline static var GAME_WIDTH : Int = 480;
+	public inline static var GAME_HEIGHT : Int = 250;
+	public inline static var ROW_COUNT : Int = Math.ceil( Settings.GAME_HEIGHT / Settings.GRID_SIZE );
+	public inline static var COLUMN_COUNT : Int = Math.ceil( Settings.GAME_WIDTH / Settings.GRID_SIZE );
+	public inline static var GAME_WORLD_X : Int = 0;
+	public inline static var GAME_WORLD_Y : Int = 50;
+	public inline static var PLAY_BG_MUSIC : Bool = false;
+	public inline static inline var MOTIONWELDER_PATH : String = "assets/motionwelder/";
+	public inline static var ITEM_IMAGE_PATH : String ="assets/img/item/";
+	public inline static var PLAYER_WALK_SPEED : Float = 30;
+	// public inline static var PLAYER_WALK_SPEED : Float = 0;
+	public inline static var COLUMN_SCROLL_SPEED : Float = 10;
 	// public static var SHOW_CONTACT_INFO : Bool = false;
-
+	
 	public static function log() : Void {
 		trace( "GRID_SIZE: " + GRID_SIZE );
 		trace( "SCREEN_WIDTH: " + SCREEN_WIDTH );

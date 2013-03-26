@@ -24,4 +24,23 @@ class SkillInfo {
 
 		return EMoveType.unknown;
 	}
+
+	public function clone() : SkillInfo {
+		var skillInfo : SkillInfo = new SkillInfo();
+		skillInfo.skillType = this.skillType;
+		skillInfo.level = this.level;
+		skillInfo.gemBind = this.gemBind;
+		skillInfo.hpMod = this.hpMod;
+
+		return skillInfo;
+	}
+
+	public function toString() : String {
+		var output : String = "";
+		output += "skillType: " + skillType + "\n";
+		output += "level: " + level + "\n";
+		output += "gemBind: " + gemBind + "\n";
+		output += "hpMod: " + hpMod + "\n";
+		return output;
+	}
 }

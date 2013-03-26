@@ -20,7 +20,7 @@ class MultipleAttack extends AttackBase {
 	function animCompleteHandler() : Void {
 		--attackCount;
 
-			this.battleActor.owner.hurtOthers( this.battleActor.enemy.owner, this.battleActor.owner.damage );
+		this.battleActor.owner.hurtOthers( this.battleActor.enemy.owner, this.battleActor.owner.attack );
 
 		if( attackCount > 0 ) {
 			beginMove();

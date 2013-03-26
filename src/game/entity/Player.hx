@@ -8,13 +8,15 @@ import types.EGameEntity;
 import types.EActor;
 import types.EActorState;
 import game.battle.BattleManager;
+import game.entity.ActorCNS;
+import game.entity.ActorSettings;
 
 class Player extends Actor {
-	public function new( p_id : String, p_parent : Dynamic, animPath : String ) {
-		super( p_id, p_parent, EGameEntity.player, EActor.jimmy );
+	public function new( p_id : String, p_parent : Dynamic, p_actorCNS : ActorCNS ) {
+		super( p_id, p_parent, EGameEntity.player, p_actorCNS );
 
 		// this.gameEntityType = EGameEntity.player;
-        this.addComponent( new AnimationComponent( this, animPath ) );
+        // this.addComponent( new AnimationComponent( this, animPath ) );
 	
 		Global.getInstance().sceneGame.createSensor( this, ( Settings.GRID_SIZE * 3 ) / 4, ( Settings.GRID_SIZE * 3 ) / 4 );
 

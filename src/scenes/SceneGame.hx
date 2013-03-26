@@ -5,6 +5,7 @@ import firerice.core.Entity;
 import firerice.core.Camera;
 import firerice.common.Helper;
 import firerice.components.TransformComponent;
+import nme.geom.Point;
 import nme.display.Sprite;
 import nme.display.Bitmap;
 import nme.display.Graphics;
@@ -35,10 +36,16 @@ import game.Global;
 import game.StageInfo;
 import game.battle.BattleManager;
 import game.ui.GameUI;
+import game.entity.ActorCNS;
+import game.entity.ItemCNS;
+import game.entity.EntityCNS;
+import game.entity.ActorSettings;
+
 import types.EGameEntity;
 import types.EActorState;
 import types.EGemType;
 import types.EItem;
+import types.EActor;
 
 /**
  * ...
@@ -87,9 +94,7 @@ class SceneGame extends Scene
 		Lib.current.stage.addEventListener( KeyboardEvent.KEY_UP, onKeyUp );
 
 		this.keymap = new Hash<Bool>();
-
-		this.stageInfo = new StageInfo();
-		this.stageInfo.read( "assets/data/stage/stage1.xml" );
+		ActorSettings.getInstance().read( "haha" );
 		
 		// world = new B2World( new B2Vec2 (0, 10.0), true );
 		world = new B2World( new B2Vec2 (0, 0), false );
@@ -230,17 +235,25 @@ class SceneGame extends Scene
 		this.gameWorld.transform.y = Settings.GAME_WORLD_Y;
 		// this.context.addChild( debug );
 
+		this.stageInfo = new StageInfo();
+		this.stageInfo.read( "assets/data/stage/stage1.xml" );
+
+		var columnCount : Int = Std.int( this.stageInfo.entitiesInfo.length / Settings.ROW_COUNT );
+		trace( "columnCount: " + columnCount );
 		this.columns = new Array<Column>();
-		for( i in 0 ... Settings.COLUMN_COUNT ) {
+		for( i in 0 ... columnCount ) {
 			var id : String = "column" + ( i + 1 );
 			var column : Column = new Column( id, this.gameWorld );
 			column.transform.x = i * Settings.GRID_SIZE;
 			this.columns.push( column );
 		}
-		this.columns[2].addTopping( 2, "m1" );
-		this.columns[3].addToppingItem( 3, EItem.potion, 1 );
 
-		this.player = new Player( "player", this.gameWorld, "assets/motionwelder/jimmy" );
+		initStageInfo();
+
+		// this.columns[2].addTopping( 2, "m1" );
+		// this.columns[3].addToppingItem( 3, EItem.potion, 1 );
+
+		this.player = new Player( "player", this.gameWorld, game.entity.ActorSettings.getInstance().createActorCNS( EGameEntity.player, types.EActor.jimmy, 1 ) );
 		// this.player.changeState( types.EActorState.walk );
 		// this.player.playWalkAnimation();
 		this.player.transform.y = Math.floor( Settings.ROW_COUNT / 2 ) * Settings.GRID_SIZE;
@@ -270,7 +283,7 @@ class SceneGame extends Scene
 			this.bgMusic = Assets.getSound ("assets/audio/music/overworld.mp3");
 			this.bgMusicChannel = this.bgMusic.play( 0, 10000 );
        	}
-       	// this.update( 0 );
+       	this.update( 0 );
     }
 
 	// public function createSensor (x:Float, y:Float, width:Float, height:Float, dynamicBody:Bool):B2Body {
@@ -373,11 +386,11 @@ class SceneGame extends Scene
 	}
 
     override function update_( dt : Float ) : Void {
-        super.update_( dt );
-
         if( this.isPaused ) {
         	return;
         }
+
+        super.update_( dt );
 
 		world.step( 1 / 30, 10, 10 );
 		world.clearForces ();
@@ -405,19 +418,52 @@ class SceneGame extends Scene
 		// this.camera.x += dt * 20;
 		this.camera.update( dt );
 
-		var cameraSpeed : Float = 200;
-		if( this.keymap.exists( "37" ) && this.keymap.get( "37" ) ) {
-			this.camera.x -= dt * cameraSpeed;
+		// var cameraSpeed : Float = 200;
+		// if( this.keymap.exists( "37" ) && this.keymap.get( "37" ) ) {
+		// 	this.camera.x -= dt * cameraSpeed;
+		// }
+		// if( this.keymap.exists( "38" ) && this.keymap.get( "38" ) ) {
+		// 	this.camera.y -= dt * cameraSpeed;
+		// }
+		// if( this.keymap.exists( "39" ) && this.keymap.get( "39" ) ) {
+		// 	this.camera.x += dt * cameraSpeed;
+		// }
+		// if( this.keymap.exists( "40" ) && this.keymap.get( "40" ) ) {
+		// 	this.camera.y += dt * cameraSpeed;
+		// }
+			
+		if( ( this.columns[0].transform.x - this.camera.x + Settings.GRID_SIZE ) <= 0 ||
+			( this.columns[0].transform.x - this.camera.x ) > 0 ) {
+    		updateColumnSequence();
 		}
-		if( this.keymap.exists( "38" ) && this.keymap.get( "38" ) ) {
-			this.camera.y -= dt * cameraSpeed;
-		}
-		if( this.keymap.exists( "39" ) && this.keymap.get( "39" ) ) {
-			this.camera.x += dt * cameraSpeed;
-		}
-		if( this.keymap.exists( "40" ) && this.keymap.get( "40" ) ) {
-			this.camera.y += dt * cameraSpeed;
-		}
+    }
+
+    function updateColumnSequence() : Void {
+    	// trace( "updateColumnSequence" );
+    	var biggestX : Float = this.columns[this.columns.length-1].transform.x + Settings.GRID_SIZE;
+    	var smallestX : Float = this.columns[0].transform.x;
+
+    	for( column in this.columns ) {
+    		if( ( column.transform.x - this.camera.x + Settings.GRID_SIZE ) <= 0 ) {
+    			column.transform.x = biggestX;
+    			biggestX += Settings.GRID_SIZE;
+    		}
+    		// else if( ( column.transform.x - this.camera.x ) >= Settings.GAME_WIDTH ) {
+    		// 	column.transform.x = smallestX;
+    		// 	smallestX -= Settings.GRID_SIZE;
+    		// }
+    	}
+    	this.columns.sort( function( col1 : Column, col2 : Column ) : Int {
+    		if( col1.transform.x == col2.transform.x ) {
+    			return 0;
+    		} else if( col1.transform.x > col2.transform.x ) {
+    			return 1;
+    		} else {
+    			return -1;
+    		}
+    	} );
+
+    	// trace( "updateColumnSequence" );
     }
 
     function onMouseDown( e : MouseEvent ) : Void {
@@ -456,6 +502,14 @@ class SceneGame extends Scene
     function onMouseUp( _ ) : Void {
     	if( this.clickedColumn != null ) {
 	    	this.clickedColumn.alignToGrid();
+
+			var zeroPos : Point = new Point( 0, 0 );
+			var pos : Point = new Point( 0, 0 );
+			for( grid in this.clickedColumn.grids ) {
+				pos = grid.context.localToGlobal( zeroPos );
+				// trace( pos.y );
+			}
+	    	// trace( "\n" );
 	    	this.clickedColumn = null;
 	    }
     }
@@ -536,5 +590,41 @@ class SceneGame extends Scene
 	function inputGemHandler( p_gemType : EGemType ) : Void {
 		// trace( "inputGemHandler: " + p_gemType );
 		this.player.useSkill( p_gemType );
+	}
+
+	function initStageInfo() : Void {
+		var columnIndex : Int = 0;
+		var rowIndex : Int = 0;
+		var entityCNS : EntityCNS = null;
+		for( i in 0 ... this.stageInfo.entitiesInfo.length ) {
+			entityCNS = this.stageInfo.entitiesInfo[i];
+
+			columnIndex = Std.int( i / Settings.ROW_COUNT );
+			rowIndex = Std.int( i % Settings.ROW_COUNT );
+
+			// trace( "col: " + columnIndex + ", " + rowIndex );
+			if( entityCNS == null ) {
+				continue;
+			}
+
+				trace( "unhandled entity type : " + entityCNS.entityType );
+			if( Std.is( entityCNS, ActorCNS ) ) {
+				var actorCNS : ActorCNS = cast( entityCNS, ActorCNS );
+				// trace( "entityCNS: " + entityCNS );
+				// trace( "actorCNS: " + actorCNS );
+				this.columns[columnIndex].addToppingMonster( rowIndex, actorCNS );
+				// var actorCNS : ActorCNS = cast( ActorCNS, entityCNS );
+			} else if( Std.is( entityCNS, ItemCNS ) ) {
+				var itemCNS : ItemCNS = cast( entityCNS, ItemCNS );
+				this.columns[columnIndex].addToppingItem( rowIndex, itemCNS );
+			} else {
+				trace( "unhandled entity type : " + entityCNS.entityType );
+				trace( Type.typeof( entityCNS ) );
+			}
+		}
+	}
+
+	function updateStageInfo() {
+		// this.stageInfo
 	}
 }

@@ -6,19 +6,20 @@ import nme.display.BitmapData;
 import nme.display.Bitmap;
 import nme.Assets;
 import game.entity.Player;
+import game.entity.ItemCNS;
 import com.eclecticdesignstudio.motion.Actuate;
 
 class Item extends GameEntity {
 	public var itemType( getItemType, null ) : EItem;
 	var itemCNS : ItemCNS = null;
 
-	public function new( p_id : String, p_parent : Dynamic, p_type : EItem, p_level : Int ) {
+	public function new( p_id : String, p_parent : Dynamic, p_itemCNS : ItemCNS ) {
 		super( p_id, p_parent, types.EGameEntity.item );
 
-		this.itemCNS = ItemSettings.createItemCNS( p_type, p_level );
+		this.itemCNS = p_itemCNS;
 		// this.itemCNS.owner = this;
 
-		var imagePath : String = "assets/img/item/" + p_type + "" + p_level + ".png";
+		var imagePath : String = Settings.ITEM_IMAGE_PATH + "" + this.itemCNS.itemType + "" + this.itemCNS.level + ".png";
 		// trace( "imagePath: " + imagePath );
 
 		var bitmapData : BitmapData = Assets.getBitmapData( imagePath );
@@ -45,7 +46,7 @@ class Item extends GameEntity {
 	}
 
 	function getItemType() : EItem {
-		return this.itemCNS.type;
+		return this.itemCNS.itemType;
 	}
 
 	// override public function beginContactHandler( entity : GameEntity ) : Void {

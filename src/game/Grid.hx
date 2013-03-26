@@ -11,6 +11,7 @@ import types.EItem;
 import game.Column;
 import game.entity.Actor;
 import game.entity.GameEntity;
+import game.entity.ActorCNS;
 
 class Grid extends GameEntity {
 	// public var pos( default, default ) : Int = 0;

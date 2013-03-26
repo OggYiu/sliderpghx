@@ -15,7 +15,7 @@ class ItemSettings {
 
 	public static function createItemCNS( p_itemType : EItem, p_level : Int ) : ItemCNS {
 		var itemCNS : ItemCNS = new ItemCNS();
-		itemCNS.type = p_itemType;
+		itemCNS.itemType = p_itemType;
 		itemCNS.level = p_level;
 		itemCNS.value = 10;
 

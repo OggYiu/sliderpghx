@@ -3,44 +3,33 @@ package game.entity;
 import firerice.common.Helper;
 import types.EGemType;
 import types.ESkill;
+import types.EActor;
+import game.entity.ActorSettings;
 
-class ActorCNS {
-	public var owner( default, null ) : Actor = null;
-	public var level( default, null ) : Int = 1;
-	public var maxHp( default, null ) : Float = 0;
-	public var hp( default, null ) : Float = 0;
-	public var damage( default, null ) : Float = 0;
-	public var defense( default, null ) : Float = 0;
-	public var exp( default, null ) : Int = 0;
-	public var redGem( default, null ) : Int = 0;
-	public var blueGem( default, null ) : Int = 0;
-	public var greenGem( default, null ) : Int = 0;
-	public var isDead( default, null ) : Bool = false;
+class ActorCNS extends EntityCNS {
+	// public var owner( default, default ) : Actor = null;
+	public var actorType( default, default ) : EActor;
+	public var name( default, default ) : String = "";
+	public var level( default, default ) : Int = 1;
+	public var maxHp( default, default ) : Float = 0;
+	public var hp( default, default ) : Float = 0;
+	public var attack( default, default ) : Float = 0;
+	public var defense( default, default ) : Float = 0;
+	public var critical( default, default ) : Float = 0;
+	public var parry( default, default ) : Float = 0;
+	public var exp( default, default ) : Int = 0;
+	public var redGem( default, default ) : Int = 0;
+	public var blueGem( default, default ) : Int = 0;
+	public var greenGem( default, default ) : Int = 0;
+	// public var isDead( default, null ) : Bool = false;
 	public var skills( default, null ) : Hash<SkillInfo> = null;
 
-	public function new( p_owner : Actor ) {
-		this.owner = p_owner;
+	public function new() {
+		super();
+		
 		this.skills = new Hash<SkillInfo>();
 	}
-
-	public function init(	p_hp : Float,
-							p_damage : Float,
-							p_defense : Float,
-							p_exp : Int,
-							p_redGem : Int,
-							p_greenGem : Int, 
-							p_blueGem : Int ) : Void {
-		this.isDead = false;
-
-		this.maxHp = this.hp = p_hp;
-		this.damage = p_damage;
-		this.defense = p_defense;
-		this.exp = p_exp;
-		this.redGem = p_redGem;
-		this.greenGem = p_greenGem;
-		this.blueGem = p_blueGem;
-	}
-
+	
 	public function addSkill( p_skillInfo : SkillInfo ) : Void {
 		Helper.assert( !this.skills.exists( p_skillInfo.skillType + "" ), "skill " + p_skillInfo.skillType + " already existed" );
 		for( skill in this.skills ) {
@@ -50,34 +39,6 @@ class ActorCNS {
 			}
 		}
 		this.skills.set( p_skillInfo.skillType + "", p_skillInfo );
-	}
-
-	public function reduceHp( p_value : Float ) : Void {
-		if( this.isDead ) {
-			return ;
-		}
-
-		this.hp -= p_value;
-		if( this.hp <= 0 ) {
-			this.hp = 0;
-			this.isDead = true;
-
-			this.owner.deadHandler();
-		}
-	}
-
-	public function gainExp( p_value : Int ) : Void {
-		var nextLevelExp : Int = game.entity.ActorSettings.getNextLevelExp( this.owner );
-	}
-
-	public function gainLeve() : Void {
-	}
-
-	public function heal( p_value : Float ) : Void {
-		this.hp += p_value;
-		if( this.hp > this.maxHp ) {
-			this.hp = this.maxHp;
-		}
 	}
 
 	public function getSkill( p_gemType : EGemType ) : SkillInfo {
@@ -90,5 +51,60 @@ class ActorCNS {
 			}
 		}
 		return skillInfo;
+	}
+
+	public function clone() : ActorCNS {
+		var actorCNS : ActorCNS = new ActorCNS();
+		// actorCNS.owner = this.owner;
+		actorCNS.actorType = this.actorType;
+		actorCNS.name = this.name;
+		actorCNS.level = this.level;
+		actorCNS.maxHp = this.maxHp;
+		actorCNS.hp = this.hp;
+		actorCNS.attack = this.attack;
+		actorCNS.defense = this.defense;
+		actorCNS.critical = this.critical;
+		actorCNS.parry = this.parry;
+		actorCNS.exp = this.exp;
+		actorCNS.redGem = this.redGem;
+		actorCNS.blueGem = this.blueGem;
+		actorCNS.greenGem = this.greenGem;
+
+		for( skillInfo in this.skills ) {
+			actorCNS.addSkill( skillInfo.clone() );
+		}
+
+		return actorCNS;
+	}
+
+	public function setLevel( p_level : Int ) : Void {
+		ActorSettings.getInstance().setLevel( this, p_level );
+	}
+
+	public function toString() : String {
+		var output : String = "";
+
+		output += "\n";
+		// output += "owner: " + this.owner.id + "\n";
+		output += "actorType: " + this.actorType + "\n";
+		output += "name: " + this.name + "\n";
+		output += "level: " + this.level + "\n";
+		output += "maxHp: " + this.maxHp + "\n";
+		output += "hp: " + this.hp + "\n";
+		output += "attack: " + this.attack + "\n";
+		output += "defense: " + this.defense + "\n";
+		output += "critical: " + this.critical + "\n";
+		output += "parry: " + this.parry + "\n";
+		output += "exp: " + this.exp + "\n";
+		output += "redGem: " + this.redGem + "\n";
+		output += "blueGem: " + this.blueGem + "\n";
+		output += "greenGem: " + this.greenGem + "\n";
+
+		output += "skills:\n";
+		for( skill in this.skills ) {
+			output += skill + "\n";
+		}
+
+		return output;
 	}
 }

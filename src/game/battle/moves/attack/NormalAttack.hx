@@ -24,6 +24,6 @@ class NormalAttack extends AttackBase {
 		var sound : Sound = Assets.getSound ("assets/audio/sound/swordSlash.mp3");
 		sound.play( 0, 1 );
 
-		this.battleActor.owner.hurtOthers( this.battleActor.enemy.owner, this.battleActor.owner.damage );
+		this.battleActor.owner.hurtOthers( this.battleActor.enemy.owner, this.battleActor.owner.attack );
 	}
 }

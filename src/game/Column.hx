@@ -4,13 +4,18 @@ import firerice.core.Entity;
 import firerice.components.TransformComponent;
 import firerice.common.Helper;
 import nme.display.Graphics;
+import nme.geom.Point;
 import game.entity.GameEntity;
 import game.entity.Actor;
 import game.entity.Monster;
 import game.entity.Item;
 import game.entity.Player;
+import game.entity.ActorCNS;
+import game.entity.EntityCNS;
+import game.entity.ItemCNS;
 import types.EGameEntity;
 import types.EItem;
+import types.EActor;
 import com.eclecticdesignstudio.motion.Actuate;
 
 class Column extends Entity {
@@ -58,13 +63,6 @@ class Column extends Entity {
 	}
 
 	public function scroll( dy : Float ) : Void {
-		// var cloneTop : Bool = false;
-		// var cloneBottom : Bool = false;
-		// var topGrid : Grid = null;
-		// var bottomGrid : Grid = null;
-
-		// var topExcess : Bool = false;
-		// var bottomExcess : Bool = false;
 		var grid : Grid = null;
 		for( i in 0 ... this.grids.length ) {
 			grid = this.grids[i];
@@ -121,37 +119,51 @@ class Column extends Entity {
 	}
 
 	function refreshGridsVisibility() {
+		// for( grid in this.grids ) {
+		// 	if(	( grid.transform.y + grid.height ) < 0.1  ||
+		// 		Helper.isZero( grid.transform.y + grid.height ) ||
+		// 		( grid.transform.y >= Settings.GAME_HEIGHT ) ) {
+		// 		grid.setVisible( false );
+		// 	} else {
+		// 		grid.setVisible( true );
+		// 	}
+		// }
+
+		var zeroPos : Point = new Point( 0, 0 );
+		var pos : Point = new Point( 0, 0 );
 		for( grid in this.grids ) {
-			// trace( "grid.transform.y: " + grid.transform.y );
-				// trace( "grid.transform.y - grid.height: " + ( grid.transform.y - grid.height ) );
-			if(	( grid.transform.y + grid.height ) < 0  ||
-				( grid.transform.y >= Settings.GAME_HEIGHT ) ) {
-				// trace( "false" );
-				grid.setVisible( false );
+			pos = grid.context.localToGlobal( zeroPos );
+			if( pos.y < Settings.GAME_WORLD_Y ) {
+				grid.context.alpha = ( pos.y + grid.height - Settings.GAME_WORLD_Y ) / Settings.GRID_SIZE;
+			} else if( ( pos.y + grid.context.height - 1 ) > ( Settings.GAME_HEIGHT + Settings.GAME_WORLD_Y ) ) {
+				// grid.context.alpha = ( ( pos.y + grid.context.height ) - Settings.GAME_HEIGHT - Settings.GAME_WORLD_Y ) / Settings.GRID_SIZE;
+				var diff : Float = ( pos.y + grid.context.height ) - ( Settings.GAME_HEIGHT + Settings.GAME_WORLD_Y );
+				if( diff <= Settings.GRID_SIZE ) {
+					grid.context.alpha = ( Settings.GRID_SIZE - diff ) / Settings.GRID_SIZE;
+				} else {
+					grid.context.alpha = 0;
+				}
 			} else {
-				// trace( "true" );
-				grid.setVisible( true );
+				grid.context.alpha = 1;
 			}
+			// grid.context.alpha = ( grid.transform.y + grid.height );
+			// if( grid.context.alpha > 1 ) {
+			// 	grid.context.alpha = 1;
+			// }
 		}
 	}
 
 	public function alignToGrid() : Void {
 		// trace( "\n" );
 		for( grid in this.grids ) {
-			// alignY = grid.transform.y % Settings.GRID_SIZE;
 			alignY = Math.abs( grid.transform.y );
-			// trace( "alignToGrid, alignY: " + alignY );
+			alignY %= Settings.GRID_SIZE;
 			if( alignY >= ( Settings.GRID_SIZE / 2 ) ) {
-				// trace( "alignToGrid 1" );
-				// alignY = -alignY;
 				alignY = -( Settings.GRID_SIZE - alignY );
-				// alignY = alignY;
 			} else {
-				// trace( "alignToGrid 2" );
-				// alignY = -alignY;
 			}
-				// trace( "alignToGrid 3: " + alignY );
-			// trace( "alignY: " + alignY );
+
+			// trace( "alignY: "  + alignY );
 			break;
 		}
 	}
@@ -174,8 +186,9 @@ class Column extends Entity {
 
 	override function update_( dt : Float ) : Void {
 		super.update_( dt );
+
 		if( !Helper.isZero( alignY ) ) {
-			var scrollY = this.alignY * dt * 10;
+			var scrollY = this.alignY * dt * Settings.COLUMN_SCROLL_SPEED;
 			if( Math.abs( scrollY ) > Math.abs( this.alignY ) ) {
 				scrollY = this.alignY;
 			}
@@ -196,33 +209,34 @@ class Column extends Entity {
 	}
 
 	// public function addTopping( gridIndex : Int, gameEntityType : EGameEntity ) {
-	public function addTopping( gridIndex : Int, entityName : String ) {
+	public function addToppingMonster( gridIndex : Int, p_actorCNS : ActorCNS ) {
 		Helper.assert( ( gridIndex >= 0 && gridIndex < this.grids.length ), "invalid gridIndex" );
-
+		
+		var targetIndex : Int = gridIndex;
 		var actor : Actor;
-		actor = new Monster( "monster", this.grids[gridIndex], "assets/motionwelder/m1" );
+		actor = new Monster( "monster1", this.grids[targetIndex], p_actorCNS );
 		this.grids[gridIndex].addTopping( actor );
 		actor.camera = this.camera;
-		var targetIndex : Int = ( gridIndex + Settings.ROW_COUNT ) % ( Settings.ROW_COUNT * 2 );
-		actor = new Monster( "monster2", this.grids[targetIndex], "assets/motionwelder/m1" );
+		targetIndex = ( gridIndex + Settings.ROW_COUNT ) % ( Settings.ROW_COUNT * 2 );
+		actor = new Monster( "monster2", this.grids[targetIndex], p_actorCNS );
 		actor.camera = this.camera;
 
 		this.grids[targetIndex].addTopping( actor );
 	}
 
-	public function addToppingItem( gridIndex : Int, p_type : EItem, p_level ) : Void {
+	public function addToppingItem( gridIndex : Int, p_itemCNS : ItemCNS ) : Void {
 		Helper.assert( ( gridIndex >= 0 && gridIndex < this.grids.length ), "invalid gridIndex" );
 
 		var targetGrid : Grid = null;
 		var item : Item = null;
 
 		targetGrid = this.grids[gridIndex];
-		item = new Item( "item_on_" + targetGrid.id, targetGrid, p_type, p_level );
+		item = new Item( "item_on_" + targetGrid.id, targetGrid, p_itemCNS );
 		this.grids[gridIndex].addTopping( item );
 		item.camera = this.camera;
 
 		targetGrid = this.grids[( gridIndex + Settings.ROW_COUNT ) % ( Settings.ROW_COUNT * 2 )];
-		item = new Item( "item_on_" + targetGrid.id, targetGrid, p_type, p_level );
+		item = new Item( "item_on_" + targetGrid.id, targetGrid, p_itemCNS );
 		this.grids[gridIndex].addTopping( item );
 		item.camera = this.camera;
 	} 
