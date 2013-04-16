@@ -15,6 +15,8 @@ import game.entity.ActorStateMachine;
 import game.entity.SkillInfo;
 import game.entity.ActorCNS;
 import game.entity.ActorSettings;
+import game.Settings;
+import box2D.common.math.B2Vec2;
 
 class Actor extends GameEntity {
 	public var actorType( getActorType, null ) : EActor;
@@ -65,10 +67,20 @@ class Actor extends GameEntity {
 		return this.actorStateMachine.curState.stateType;
 	}
 
+	override function updateSensorPos() : Void {
+		var worldPos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
+		worldPos.x -= sensorWidth;
+		sensor.setPosition( new B2Vec2(	worldPos.x, worldPos.y ) );
+	}
+
 	override function update_( dt : Float ) : Void {
 		super.update_( dt );
 
 		this.actorStateMachine.update( dt );
+
+		// turn the image offset in motionwelder
+		this.context.x = this.transform.x + this.context.width / 2;
+		this.context.y = this.transform.y + Settings.GRID_SIZE;
 	}
 
 	public function playAttackAnimation() : Void {
@@ -89,10 +101,13 @@ class Actor extends GameEntity {
 	public function playWalkAnimation() : Void {
 	}
 
+	public function playRunAnimation() : Void {
+	}
+	
 	public function playHurtAnimation() : Void {
 		this.animation.animator.play(	2,
 										EOrientation.none,
-										WrapMode.loop,
+										WrapMode.single,
 										true );
 	}
 
@@ -110,6 +125,7 @@ class Actor extends GameEntity {
 		}
 
 		this.actorCNS.hp -= p_value;
+		// this.playHurtAnimation();
 		if( this.actorCNS.hp <= 0 ) {
 			this.actorCNS.hp = 0;
 			this.isDead = true;

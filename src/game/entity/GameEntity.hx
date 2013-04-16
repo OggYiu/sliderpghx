@@ -26,31 +26,15 @@ class GameEntity extends Entity {
 		super.update_( dt );
 
 		if ( sensor != null ) {
-			// sensor.setPosition( new B2Vec2( this.transform.x, this.transform.y ) );
-			// if( this.camera != null ) {
-				// sensor.setPosition( new B2Vec2(	this.transform.x + Settings.GAME_WORLD_X - this.context.width / 2,
-				// 								this.transform.y + Settings.GAME_WORLD_Y - this.context.height / 2 ) );
-				// sensor.setPosition( new B2Vec2(	this.context.x - this.context.width / 2,
-				// 								this.context.y - this.context.height / 2 ) );
-				var worldPos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
-				worldPos.x += sensorWidth / 2 + this.camera.x;
-				worldPos.y += sensorHeight / 2 + this.camera.y;
-
-				// worldPos.x 
-				// sensor.setPosition( new B2Vec2(	this.context.x, this.context.y ) );
-				sensor.setPosition( new B2Vec2(	worldPos.x, worldPos.y ) );
-				// sensor.setPosition( new B2Vec2(	this.transform.x, this.transform.y ) );
-				// this.context.loc
-				// trace( this.context.x + ", " + this.context.y );
-				// trace( this.camera );
-
-				// trace( "Settings.GAME_WORLD_X: " + Settings.GAME_WORLD_X + ", " + Settings.GAME_WORLD_Y );
-			// }
-			// sensor.setPosition( new B2Vec2( 0, 0 ) );
-
-			// trace( "this: " + this.transform.x + ", " + this.transform.y );
-			// trace( "this: " + this.context.width + ", " + this.context.height );
+			updateSensorPos();
 		}
+	}
+
+	function updateSensorPos() : Void {
+		var worldPos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
+		// worldPos.x += sensorWidth / 2 + this.camera.x;
+		// worldPos.y += sensorHeight / 2 + this.camera.y;
+		sensor.setPosition( new B2Vec2(	worldPos.x, worldPos.y ) );
 	}
 
 	override function dispose_() : Void {

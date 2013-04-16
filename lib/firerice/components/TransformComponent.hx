@@ -62,6 +62,7 @@ class TransformComponent extends Component
         // } else 
         {
             // trace( "1: " + ( camera != null ) + ", " + ( camera != this.owner ) );
+            // trace( "this.x: " + this.x + ", this.y: " + this.y );
             this.owner.context.x = this.x;
             this.owner.context.y = this.y;
         }

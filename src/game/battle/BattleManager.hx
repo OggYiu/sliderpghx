@@ -4,6 +4,7 @@ import firerice.core.Process;
 import firerice.common.Helper;
 import game.entity.GameEntity;
 import game.entity.Actor;
+import types.EActorState;
 
 class BattleManager extends Process {
   var battles : Hash<Battle> = null;
@@ -15,7 +16,7 @@ class BattleManager extends Process {
 	}
 
    	public function beginBattle( p_actor1 : Actor, p_actor2 : Actor ) : Battle {
-     var battleKey : String = p_actor1.id + "_vs_" + p_actor2.id;
+      var battleKey : String = p_actor1.id + "_vs_" + p_actor2.id;
       Helper.assert( !this.battles.exists( battleKey), "battle " + battleKey + " already existed!" );
       var battle : Battle = new Battle( battleKey, p_actor1, p_actor2 );
       this.battles.set( battle.id, battle );
@@ -40,6 +41,10 @@ class BattleManager extends Process {
         }
       }
    	}
+
+    public function isBattleTriggerState( state : EActorState ) : Bool {
+      return state == EActorState.walk || state == EActorState.run;
+    }
 
     static var s_canInit_ : Bool = false;
     static var s_instance_ : BattleManager = null;

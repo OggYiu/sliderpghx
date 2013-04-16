@@ -5,9 +5,11 @@ import types.EItem;
 import nme.display.BitmapData;
 import nme.display.Bitmap;
 import nme.Assets;
+import nme.geom.Point;
 import game.entity.Player;
 import game.entity.ItemCNS;
 import com.eclecticdesignstudio.motion.Actuate;
+import box2D.common.math.B2Vec2;
 
 class Item extends GameEntity {
 	public var itemType( getItemType, null ) : EItem;
@@ -39,6 +41,12 @@ class Item extends GameEntity {
 
 		Actuate.tween( this.context, 2, { alpha: 0 } ).onComplete( completeHandler );
 		Actuate.tween( this.context, 1, { y : this.context.y - 20 } );
+	}
+
+	override function updateSensorPos() : Void {
+		var worldPos : Point = this.context.localToGlobal( new Point( 0, 0 ) );
+		worldPos.x -= sensorWidth;
+		sensor.setPosition( new B2Vec2(	worldPos.x, worldPos.y ) );
 	}
 
 	function completeHandler() : Void {

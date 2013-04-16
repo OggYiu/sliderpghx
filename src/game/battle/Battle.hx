@@ -49,27 +49,31 @@ class Battle extends Process {
 
 		if( this.battleActor1.owner.isDead || this.battleActor2.owner.isDead ) {
 			endBattle();
+
+			if( Std.is( this.battleActor1.owner, Player ) ) {
+				this.battleActor1.owner.changeState( EActorState.walk );
+			}
+			if( Std.is( this.battleActor2.owner, Player ) ) {
+				this.battleActor2.owner.changeState( EActorState.walk );
+			}
 		} else if( 	this.battleActor1.owner.curState != EActorState.battle ||
 					this.battleActor2.owner.curState != EActorState.battle ) {
 			endBattle();
+		}
+
+		if( this.isEnded ) {
+			if( !Std.is( this.battleActor1.owner, Player ) ) {
+				this.battleActor1.owner.changeState( EActorState.idle );
+			}
+			if( !Std.is( this.battleActor2.owner, Player ) ) {
+				this.battleActor2.owner.changeState( EActorState.idle );
+			}
 		}
 	}
 
 	function endBattle() {
 		Helper.log( "battle end: " + this.id + ", idEnded: " + this.isEnded );
 		// this.battleActor1.owner.isInBattle = this.battleActor2.owner.isInBattle = false;
-
-		if( Std.is( this.battleActor1.owner, Player ) ) {
-			this.battleActor1.owner.changeState( EActorState.walk );
-		} else {
-			this.battleActor1.owner.changeState( EActorState.idle );
-		}
-
-		if( Std.is( this.battleActor2.owner, Player ) ) {
-			this.battleActor2.owner.changeState( EActorState.walk );
-		} else {
-			this.battleActor2.owner.changeState( EActorState.idle );
-		}
 
 		this.isEnded = true;
 	}

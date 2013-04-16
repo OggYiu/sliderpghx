@@ -1,0 +1,32 @@
+<TextureAtlas imagePath="sheet.png">
+	<SubTexture name="CHAR_DEATH_a.png" x="666" y="149" width="115" height="141"/>
+	<SubTexture name="CHAR_DEATH_b.png" x="783" y="147" width="118" height="135"/>
+	<SubTexture name="CHAR_DEATH_c.png" x="282" y="304" width="113" height="132"/>
+	<SubTexture name="CHAR_DEATH_d.png" x="550" y="149" width="114" height="143"/>
+	<SubTexture name="CHAR_HIT_a.png" x="430" y="149" width="118" height="144"/>
+	<SubTexture name="CHAR_HIT_b.png" x="450" y="0" width="125" height="144"/>
+	<SubTexture name="CHAR_HIT_c.png" x="310" y="157" width="118" height="144"/>
+	<SubTexture name="CHAR_HIT_d.png" x="450" y="0" width="125" height="144"/>
+	<SubTexture name="CHAR_IDLE_a.png" x="701" y="0" width="122" height="144"/>
+	<SubTexture name="CHAR_IDLE_b.png" x="577" y="0" width="122" height="146"/>
+	<SubTexture name="CHAR_RUN_a.png" x="280" y="585" width="95" height="146"/>
+	<SubTexture name="CHAR_RUN_b.png" x="173" y="455" width="105" height="147"/>
+	<SubTexture name="CHAR_RUN_c.png" x="282" y="438" width="97" height="145"/>
+	<SubTexture name="CHAR_RUN_d.png" x="173" y="455" width="105" height="147"/>
+	<SubTexture name="CHAR_WALK_a.png" x="825" y="0" width="122" height="144"/>
+	<SubTexture name="CHAR_WALK_b.png" x="187" y="157" width="121" height="145"/>
+	<SubTexture name="CHAR_WALK_c.png" x="323" y="0" width="125" height="147"/>
+	<SubTexture name="CHAR_WALK_d.png" x="187" y="157" width="121" height="145"/>
+	<SubTexture name="FIGHT_NORMAL_01a.png" x="161" y="604" width="102" height="143"/>
+	<SubTexture name="FIGHT_NORMAL_01b.png" x="187" y="0" width="134" height="155"/>
+	<SubTexture name="FIGHT_NORMAL_01c.png" x="0" y="433" width="170" height="139"/>
+	<SubTexture name="FIGHT_NORMAL_01d.png" x="0" y="292" width="170" height="139"/>
+	<SubTexture name="FIGHT_NORMAL_02a.png" x="161" y="749" width="105" height="139"/>
+	<SubTexture name="FIGHT_NORMAL_02b.png" x="173" y="304" width="107" height="149"/>
+	<SubTexture name="FIGHT_NORMAL_02c.png" x="0" y="721" width="159" height="145"/>
+	<SubTexture name="FIGHT_NORMAL_02d.png" x="0" y="574" width="159" height="145"/>
+	<SubTexture name="FIGHT_NORMAL_03a.png" x="903" y="147" width="107" height="145"/>
+	<SubTexture name="FIGHT_NORMAL_03b.png" x="0" y="868" width="140" height="139"/>
+	<SubTexture name="FIGHT_NORMAL_03c.png" x="0" y="0" width="185" height="144"/>
+	<SubTexture name="FIGHT_NORMAL_03d.png" x="0" y="146" width="185" height="144"/>
+</TextureAtlas>

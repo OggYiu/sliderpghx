@@ -11,7 +11,7 @@ class RunState extends ActorState {
 	override public function beginState() : Void {
 		super.beginState();
 
-		this.owner.playWalkAnimation();
+		this.owner.playRunAnimation();
 	}
 
 	override public function endState() : Void {
@@ -21,6 +21,6 @@ class RunState extends ActorState {
 	override function update_( dt : Float ) : Void {
 		super.update_( dt );
 
-		this.owner.transform.x += dt * 60;
+		this.owner.transform.x += dt * Settings.PLAYER_WALK_SPEED * 3;
 	}
 }

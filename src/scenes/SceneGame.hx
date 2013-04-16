@@ -253,7 +253,7 @@ class SceneGame extends Scene
 		// this.columns[2].addTopping( 2, "m1" );
 		// this.columns[3].addToppingItem( 3, EItem.potion, 1 );
 
-		this.player = new Player( "player", this.gameWorld, game.entity.ActorSettings.getInstance().createActorCNS( EGameEntity.player, types.EActor.jimmy, 1 ) );
+		this.player = new Player( "player", this.gameWorld, game.entity.ActorSettings.getInstance().createActorCNS( EGameEntity.player, types.EActor.darkKnight, 1 ) );
 		// this.player.changeState( types.EActorState.walk );
 		// this.player.playWalkAnimation();
 		this.player.transform.y = Math.floor( Settings.ROW_COUNT / 2 ) * Settings.GRID_SIZE;
@@ -408,7 +408,7 @@ class SceneGame extends Scene
 		// update entities with camera pos
 		var distanceTolerance : Float = 10;
 		for( column in this.columns ) {
-			if( Math.abs( column.transform.x - this.player.transform.x ) <= distanceTolerance ) {
+			if( Math.abs( column.transform.x - ( this.player.transform.x + this.player.sensorWidth * 2 ) ) <= distanceTolerance ) {
 				column.isTouchLocked = true;
 				this.endColumnScrolling();
 			} 

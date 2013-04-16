@@ -58,6 +58,34 @@ class ActorSettings {
 
 			{
 				actorCNSInfo = new ActorSettingInfo();
+				actorCNSInfo.name = "darkKnight";
+				actorCNSInfo.level = 1;
+				actorCNSInfo.exp = 15;
+				actorCNSInfo.maxHp = actorCNSInfo.hp = 50;
+				actorCNSInfo.attack = 6;
+				actorCNSInfo.defense = 4;
+				actorCNSInfo.critical = 0.1;
+				actorCNSInfo.parry = 0.05;
+				actorCNSInfo.redGem = 1;
+				actorCNSInfo.greenGem = 0;
+				actorCNSInfo.blueGem = 0;
+				actorCNSInfo.expIncreaseRate = 1.5;
+				actorCNSInfo.hpIncreaseRate = 1.5;
+				actorCNSInfo.attackIncreaseRate = 1.4;
+				actorCNSInfo.defenseIncreaseRate = 1.4;
+				actorCNSInfo.criticalIncreaseRate = 1.15;
+				actorCNSInfo.parryIncreaseRate = 1.0;
+
+				var skillInfo : SkillInfo = new SkillInfo();
+				skillInfo.gemBind = EGemType.green;
+				skillInfo.skillType = ESkill.heal;
+				skillInfo.hpMod = 10;
+				actorCNSInfo.addSkill( skillInfo );
+				actorInfos.set( EActor.darkKnight + "", actorCNSInfo );
+			}
+
+			{
+				actorCNSInfo = new ActorSettingInfo();
 				actorCNSInfo.name = "m1";
 				actorCNSInfo.level = 1;
 				actorCNSInfo.exp = 2;
